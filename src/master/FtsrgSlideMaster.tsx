@@ -1,4 +1,4 @@
-import { ContentMasterProps, useSlideView } from "@seminar/core";
+import { ContentMasterProps, TitleMasterProps, useSlideView } from "@seminar/core";
 import { styled } from '@mui/material/styles';
 import { useThemeProps } from "@mui/material";
 import { FtsrgCornerLogo } from "./FtsrgLogo";
@@ -23,7 +23,7 @@ const FtsrgSlideMasterContent = styled('main', {
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(3),
+  gap: theme.spacing(2),
   padding: theme.spacing(4, 8),
 }));
 
@@ -70,6 +70,14 @@ const FtsrgContentMasterTitle = styled('h1', {
   margin: 0,
 }));
 
+const FtsrgContentMasterBody = styled('div', {
+  name: 'FtsrgContentMaster',
+  slot: 'Body',
+})({
+  flex: 1,
+  minHeight: 0,
+});
+
 export function FtsrgSlideMaster({ className, children, showSlideNumber = true }: Omit<ContentMasterProps, 'title'>) {
   const { index } = useSlideView();
   return (
@@ -95,7 +103,7 @@ export function FtsrgContentMaster(inProps: ContentMasterProps) {
   return (
     <FtsrgSlideMaster {...props}>
       {title !== undefined && <FtsrgContentMasterTitle>{title}</FtsrgContentMasterTitle>}
-      {children}
+      <FtsrgContentMasterBody>{children}</FtsrgContentMasterBody>
     </FtsrgSlideMaster>
   )
 }

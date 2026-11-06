@@ -3,6 +3,7 @@ import '@fontsource-variable/open-sans/wght-italic.css';
 
 import { createSlideTheme } from '@seminar/core';
 import { FtsrgContentMaster } from './master/FtsrgSlideMaster';
+import { FtsrgTitleMaster } from './master/FtsrgTitleMaster';
 
 export default createSlideTheme({
   palette: { primary: { main: '#00639b' } },
@@ -38,9 +39,9 @@ export default createSlideTheme({
     },
   },
   master: {
+    title: FtsrgTitleMaster,
     content: FtsrgContentMaster,
   },
   slideTransition: { duration: 0 },
   stepTransition: { duration: 0 },
 });
-
