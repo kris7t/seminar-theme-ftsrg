@@ -1,0 +1,61 @@
+{
+  "name": "seminar-theme-ftsrg",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.22.2 || >=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "seminar preview",
+    "present": "seminar present",
+    "pdf": "npm run build && seminar pdf",
+    "typecheck": "tsc --noEmit",
+    "relink": "rm -rf node_modules/@seminar && npm install"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^9.5.0",
+    "@seminar/core": "~0.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "dependencies": {
+    "@fontsource-variable/open-sans": "^5.3.0"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@seminar/cli": "file:../seminar/packages/cli",
+    "@seminar/core": "file:../seminar/packages/core",
+    "@seminar/elements": "file:../seminar/packages/elements",
+    "@seminar/mdx": "file:../seminar/packages/mdx",
+    "@seminar/plugin-mathjax": "file:../seminar/packages/plugin-mathjax",
+    "@seminar/plugin-pele": "file:../seminar/packages/plugin-pele",
+    "@seminar/plugin-shiki": "file:../seminar/packages/plugin-shiki",
+    "@seminar/rollup-plugin": "file:../seminar/packages/rollup-plugin",
+    "@seminar/theme-default": "file:../seminar/packages/theme-default",
+    "@seminar/vite-plugin": "file:../seminar/packages/vite-plugin",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.4"
+  },
+  "overrides": {
+    "@seminar/cli": "$@seminar/cli",
+    "@seminar/core": "$@seminar/core",
+    "@seminar/elements": "$@seminar/elements",
+    "@seminar/mdx": "$@seminar/mdx",
+    "@seminar/plugin-mathjax": "$@seminar/plugin-mathjax",
+    "@seminar/plugin-pele": "$@seminar/plugin-pele",
+    "@seminar/plugin-shiki": "$@seminar/plugin-shiki",
+    "@seminar/rollup-plugin": "$@seminar/rollup-plugin",
+    "@seminar/theme-default": "$@seminar/theme-default",
+    "@seminar/vite-plugin": "$@seminar/vite-plugin"
+  }
+}
