@@ -1,9 +1,7 @@
-import { ContentMasterProps, TitleMasterProps, useSlideView } from "@seminar/core";
-import { styled } from '@mui/material/styles';
+import { ContentMasterProps, useSlideView } from "@seminar/core";
+import { alpha, styled, useTheme } from '@mui/material/styles';
 import { useThemeProps } from "@mui/material";
 import { FtsrgCornerLogo } from "./FtsrgLogo";
-
-const FOOTER_COLOR = '#a7a8a7';
 
 const FtsrgSlideMasterRoot = styled('section', {
   name: 'FtsrgSlideMaster',
@@ -39,10 +37,10 @@ const FtsrgSlideMasterFooter = styled('footer', {
 const FtsrgSlideMasterFooterBackground = styled('div', {
   name: 'FtsrgSlideMaster',
   slot: 'FooterBackground',
-})({
+})(({theme}) => ({
   flexGrow: 1,
-  background: FOOTER_COLOR,
-});
+  background: theme.palette.neutral.main,
+}));
 
 const FtsrgSlideMasterSlideNumber = styled('div', {
   name: 'FtsrgSlideNumber',
@@ -68,18 +66,63 @@ const FtsrgContentMasterTitle = styled('h1', {
 })(({ theme }) => ({
   ...theme.typography.h2,
   margin: 0,
+  '& strong': {
+    color: theme.palette.primary.main,
+    fontWeight: 'inherit',
+  },
 }));
 
 const FtsrgContentMasterBody = styled('div', {
   name: 'FtsrgContentMaster',
   slot: 'Body',
-})({
+})(({ theme }) => ({
   flex: 1,
   minHeight: 0,
-});
+  '& p': { marginBlock: theme.spacing(2) },
+  '& li > p': { marginBlock: 0 },
+  '& li li': {
+    fontSize: 24,
+    listStyleType: 'none',
+    '&::before': {
+      position: 'absolute',
+      content: '"\u2013"',
+      marginLeft: '-1.1em',
+    }
+  },
+  '& li li li': {
+    fontSize: 20,
+    listStyleType: 'circle',
+    '&::before': {
+      content: '""',
+      display: 'none',
+    },
+  },
+  '& li li li li': {
+    listStyleType: 'square',
+  },
+  '& strong': { color: theme.palette.primary.main },
+  '& a': {
+    color: theme.palette.primary.dark,
+    fontWeight: theme.typography.fontWeightMedium,
+    textDecorationLine: 'underline',
+    textDecorationColor: theme.palette.primary.main,
+    textDecorationThickness: '0.08em',
+    textUnderlineOffset: '0.14em',
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: alpha(theme.palette.primary.main, 0.08),
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${theme.palette.primary.main}`,
+      outlineOffset: '0.15em',
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}));
 
 export function FtsrgSlideMaster({ className, children, showSlideNumber = true }: Omit<ContentMasterProps, 'title'>) {
   const { index } = useSlideView();
+  const { palette } = useTheme();
   return (
     <FtsrgSlideMasterRoot className={className}>
       <FtsrgSlideMasterContent>
@@ -92,7 +135,7 @@ export function FtsrgSlideMaster({ className, children, showSlideNumber = true }
             {index + 1}
           </FtsrgSlideMasterSlideNumber>
         )}
-        <FtsrgSlideMasterLogo footerColor={FOOTER_COLOR} />
+        <FtsrgSlideMasterLogo footerColor={palette.neutral.main} />
       </FtsrgSlideMasterFooter>
     </FtsrgSlideMasterRoot>
   )

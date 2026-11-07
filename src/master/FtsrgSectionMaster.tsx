@@ -1,5 +1,5 @@
 import { Paragraph, SLIDE_HEIGHT, SLIDE_WIDTH, type SlideMasterProps } from "@seminar/core";
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { useThemeProps } from "@mui/material";
 import { Children, isValidElement, useId, type ReactNode } from "react";
 
@@ -24,7 +24,6 @@ const BLOCK_MID_X = SLIDE_WIDTH / 2 - SLANT_GAP / 2;
 // Outlines are aligned with the outside of their stroke to the top and bottom
 // of the block, and to the side of the gap.
 const OUTLINE_WIDTH = 4;
-const OUTLINE_COLOR = '#a7a8a7';
 const OUTLINE_TOP = BLOCK_TOP + OUTLINE_WIDTH / 2;
 const OUTLINE_BOTTOM = BLOCK_BOTTOM - OUTLINE_WIDTH / 2;
 // Horizontal width of the stroke along a slanted edge.
@@ -151,6 +150,7 @@ const FtsrgSectionMasterSubtitle = styled('div', {
  * after it, like the footer.
  */
 function SectionBackground({ filled }: VariantProps) {
+  const { palette } = useTheme();
   return (
     <FtsrgSectionMasterBackground viewBox={`0 0 ${SLIDE_WIDTH} ${SLIDE_HEIGHT}`}>
       {filled ? (
@@ -158,14 +158,14 @@ function SectionBackground({ filled }: VariantProps) {
       ) : (
         <polygon
           fill="none"
-          stroke={OUTLINE_COLOR}
+          stroke={palette.neutral.main}
           strokeWidth={OUTLINE_WIDTH}
           points={BLOCK_OUTLINE_POINTS}
         />
       )}
       <polygon
         fill="none"
-        stroke={OUTLINE_COLOR}
+        stroke={palette.neutral.main}
         strokeWidth={OUTLINE_WIDTH}
         points={OUTLINE_POINTS}
       />
