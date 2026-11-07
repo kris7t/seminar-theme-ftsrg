@@ -102,6 +102,9 @@ export default createSlideTheme({
   stepTransition: { duration: 0 },
   components: {
     SeminarCallout: {
+      defaultProps: {
+        radius: 0,
+      },
       styleOverrides: {
         root: ({
           ownerState,
