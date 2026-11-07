@@ -13,10 +13,10 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "types": [
       "node",
       "vite/client",
-      "@seminar/elements",
       "@seminar/mdx/client"
     ],
     "paths": {
@@ -27,6 +27,7 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "**/*.mdx"
   ]
 }
