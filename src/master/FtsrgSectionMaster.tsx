@@ -1,7 +1,7 @@
-import { SLIDE_HEIGHT, SLIDE_WIDTH, type SlideMasterProps } from "@seminar/core";
+import { Paragraph, SLIDE_HEIGHT, SLIDE_WIDTH, type SlideMasterProps } from "@seminar/core";
 import { styled } from '@mui/material/styles';
 import { useThemeProps } from "@mui/material";
-import { Children, useId, type ReactNode } from "react";
+import { Children, isValidElement, useId, type ReactNode } from "react";
 
 import { SLANT_GAP, SLANT_TAN } from "../design";
 import { FtsrgSlideMaster } from "./FtsrgSlideMaster";
@@ -187,15 +187,24 @@ function SectionBackground() {
   );
 }
 
+/** Whether `node` is a paragraph (as rendered from Markdown or JSX). */
+function isParagraph(node: ReactNode): boolean {
+  return isValidElement(node) && (node.type === Paragraph || node.type === 'p');
+}
+
 /**
- * Splits the content of the slide into its first element, which is the
- * subtitle, and the rest. Ignores the whitespace between elements.
+ * Splits the content of the slide into the subtitle, if the first element is
+ * a paragraph, and the rest. Ignores the whitespace between elements.
  */
 function splitSubtitle(children: ReactNode): [ReactNode, ReactNode[]] {
-  const [subtitle, ...rest] = Children.toArray(children).filter(
+  const nodes = Children.toArray(children).filter(
     (child) => typeof child !== 'string' || child.trim() !== '',
   );
-  return [subtitle, rest];
+  if (nodes.length > 0 && isParagraph(nodes[0])) {
+    const [subtitle, ...rest] = nodes;
+    return [subtitle, rest];
+  }
+  return [undefined, nodes];
 }
 
 export function FtsrgSectionMaster(inProps: SlideMasterProps) {
