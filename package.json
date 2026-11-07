@@ -25,7 +25,11 @@
     "present": "seminar present",
     "pdf": "npm run build && seminar pdf",
     "typecheck": "tsc --noEmit",
-    "relink": "rm -rf node_modules/@seminar && npm install"
+    "relink": "rm -rf node_modules/@seminar && npm install",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
@@ -41,6 +45,8 @@
   "devDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@eslint-react/eslint-plugin": "^5.28.8",
+    "@eslint/js": "^10.0.1",
     "@seminar/cli": "file:../seminar/packages/cli",
     "@seminar/core": "file:../seminar/packages/core",
     "@seminar/elements": "file:../seminar/packages/elements",
@@ -55,7 +61,13 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "prettier": "^3.9.10",
     "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1",
     "vite": "^8.3.4"
   },
   "overrides": {

@@ -40,7 +40,8 @@ export default defineConfig({
     rolldownOptions: {
       // Leave packages, including style sheets like the fonts, to the Vite
       // build of the deck, which also deduplicates React, MUI, and Seminar.
-      external: (id) => !id.startsWith('.') && !path.isAbsolute(id) && !id.startsWith('\0'),
+      external: (id) =>
+        !id.startsWith('.') && !path.isAbsolute(id) && !id.startsWith('\0'),
     },
   },
 });

@@ -25,12 +25,14 @@ const LOGO_PATHS = [
 // Exact bounding box of the glyphs (as reported by getBBox()).
 const LOGO_VIEW_BOX_WIDTH = 84.051;
 const LOGO_VIEW_BOX_HEIGHT = 44.748;
-const LOGO_VIEW_BOX = `8.998 28.65 ${LOGO_VIEW_BOX_WIDTH} ${LOGO_VIEW_BOX_HEIGHT}`;
+const LOGO_VIEW_BOX = `8.998 28.65 ${String(LOGO_VIEW_BOX_WIDTH)} ${String(LOGO_VIEW_BOX_HEIGHT)}`;
 
 function LogoGlyphs() {
   return (
     <g fill="currentColor">
-      {LOGO_PATHS.map((d) => <path key={d} d={d} />)}
+      {LOGO_PATHS.map((d) => (
+        <path key={d} d={d} />
+      ))}
     </g>
   );
 }
@@ -77,16 +79,21 @@ const GRADIENT_START = '#283c88';
 const GRADIENT_END = '#5f2c60';
 const GRADIENT_ANGLE_DEG = 64.2;
 const GRADIENT_LENGTH = 61.15;
-const GRADIENT_DX = GRADIENT_LENGTH * Math.cos((GRADIENT_ANGLE_DEG * Math.PI) / 180);
-const GRADIENT_DY = GRADIENT_LENGTH * Math.sin((GRADIENT_ANGLE_DEG * Math.PI) / 180);
+const GRADIENT_DX =
+  GRADIENT_LENGTH * Math.cos((GRADIENT_ANGLE_DEG * Math.PI) / 180);
+const GRADIENT_DY =
+  GRADIENT_LENGTH * Math.sin((GRADIENT_ANGLE_DEG * Math.PI) / 180);
 // Beyond the bottom-right corner, the gradient continues to HOVER_END over
 // HOVER_SHIFT. This part lies outside the badge until the gradient slides back
 // horizontally on hover, far enough to advance it by HOVER_SHIFT.
 const HOVER_END = '#9f172d';
 const HOVER_SHIFT = GRADIENT_LENGTH;
-const HOVER_END_DX = HOVER_SHIFT * Math.cos((GRADIENT_ANGLE_DEG * Math.PI) / 180);
-const HOVER_END_DY = HOVER_SHIFT * Math.sin((GRADIENT_ANGLE_DEG * Math.PI) / 180);
-const HOVER_SHIFT_X = HOVER_SHIFT / Math.cos((GRADIENT_ANGLE_DEG * Math.PI) / 180);
+const HOVER_END_DX =
+  HOVER_SHIFT * Math.cos((GRADIENT_ANGLE_DEG * Math.PI) / 180);
+const HOVER_END_DY =
+  HOVER_SHIFT * Math.sin((GRADIENT_ANGLE_DEG * Math.PI) / 180);
+const HOVER_SHIFT_X =
+  HOVER_SHIFT / Math.cos((GRADIENT_ANGLE_DEG * Math.PI) / 180);
 const BADGE_POINTS = [
   [BADGE_SLANT, 0],
   [BADGE_WIDTH + BADGE_BLEED, 0],
@@ -98,13 +105,19 @@ const BADGE_POINTS = [
 const FOCUS_RING_INSET = 2;
 const FOCUS_RING_WIDTH = 1;
 // Horizontal offset that moves the slanted edge FOCUS_RING_INSET inwards.
-const FOCUS_RING_SLANT_INSET =
-  FOCUS_RING_INSET * Math.hypot(1, SLANT_TAN);
+const FOCUS_RING_SLANT_INSET = FOCUS_RING_INSET * Math.hypot(1, SLANT_TAN);
 const FOCUS_RING_POINTS = [
-  [BADGE_SLANT * (1 - FOCUS_RING_INSET / BADGE_HEIGHT) + FOCUS_RING_SLANT_INSET, FOCUS_RING_INSET],
+  [
+    BADGE_SLANT * (1 - FOCUS_RING_INSET / BADGE_HEIGHT) +
+      FOCUS_RING_SLANT_INSET,
+    FOCUS_RING_INSET,
+  ],
   [BADGE_WIDTH - FOCUS_RING_INSET, FOCUS_RING_INSET],
   [BADGE_WIDTH - FOCUS_RING_INSET, BADGE_HEIGHT - FOCUS_RING_INSET],
-  [BADGE_SLANT * (FOCUS_RING_INSET / BADGE_HEIGHT) + FOCUS_RING_SLANT_INSET, BADGE_HEIGHT - FOCUS_RING_INSET],
+  [
+    BADGE_SLANT * (FOCUS_RING_INSET / BADGE_HEIGHT) + FOCUS_RING_SLANT_INSET,
+    BADGE_HEIGHT - FOCUS_RING_INSET,
+  ],
 ].join(' ');
 
 const FtsrgCornerLogoRoot = styled('svg', {
@@ -114,7 +127,7 @@ const FtsrgCornerLogoRoot = styled('svg', {
   display: 'block',
   height: BADGE_HEIGHT,
   overflow: 'visible',
-  aspectRatio: `${VIEW_BOX_WIDTH} / ${BADGE_HEIGHT}`,
+  aspectRatio: `${String(VIEW_BOX_WIDTH)} / ${String(BADGE_HEIGHT)}`,
 });
 
 const FTSRG_URL = 'https://ftsrg.mit.bme.hu';
@@ -125,7 +138,7 @@ const FtsrgCornerLogoBadge = styled('a', {
 })({
   outline: 'none',
   '&:hover linearGradient, &:focus-visible linearGradient': {
-    transform: `translateX(${-HOVER_SHIFT_X}px)`,
+    transform: `translateX(${String(-HOVER_SHIFT_X)}px)`,
   },
   // The default outline would follow the bounding box of the shifting
   // gradient, so we draw a ring along the badge outline instead.
@@ -150,7 +163,7 @@ const FtsrgCornerLogoGradient = styled('linearGradient', {
   slot: 'Gradient',
 })(({ theme }) => ({
   '@media (prefers-reduced-motion: no-preference)': {
-    transition: theme.transitions.create("transform", {
+    transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.standard,
       easing: theme.transitions.easing.easeInOut,
     }),
@@ -171,13 +184,16 @@ export interface FtsrgCornerLogoProps {
  * Drawing the slanted end here (rather than clipping the footer with CSS)
  * keeps it pixel-aligned with the badge at every scale.
  */
-export function FtsrgCornerLogo({ className, footerColor }: FtsrgCornerLogoProps) {
+export function FtsrgCornerLogo({
+  className,
+  footerColor,
+}: FtsrgCornerLogoProps) {
   // Every slide renders its own copy, so the ids must be unique.
   const gradientId = useId();
   return (
     <FtsrgCornerLogoRoot
       className={className}
-      viewBox={`${VIEW_BOX_X} 0 ${VIEW_BOX_WIDTH} ${BADGE_HEIGHT}`}
+      viewBox={`${String(VIEW_BOX_X)} 0 ${String(VIEW_BOX_WIDTH)} ${String(BADGE_HEIGHT)}`}
     >
       <polygon
         fill={footerColor}
@@ -204,7 +220,10 @@ export function FtsrgCornerLogo({ className, footerColor }: FtsrgCornerLogoProps
             y2={BADGE_HEIGHT + HOVER_END_DY}
           >
             <stop offset="0" stopColor={GRADIENT_START} />
-            <stop offset={GRADIENT_LENGTH / (GRADIENT_LENGTH + HOVER_SHIFT)} stopColor={GRADIENT_END} />
+            <stop
+              offset={GRADIENT_LENGTH / (GRADIENT_LENGTH + HOVER_SHIFT)}
+              stopColor={GRADIENT_END}
+            />
             <stop offset="1" stopColor={HOVER_END} />
           </FtsrgCornerLogoGradient>
         </defs>
@@ -219,7 +238,10 @@ export function FtsrgCornerLogo({ className, footerColor }: FtsrgCornerLogoProps
         >
           <LogoGlyphs />
         </svg>
-        <FtsrgCornerLogoFocusRing strokeWidth={FOCUS_RING_WIDTH} points={FOCUS_RING_POINTS} />
+        <FtsrgCornerLogoFocusRing
+          strokeWidth={FOCUS_RING_WIDTH}
+          points={FOCUS_RING_POINTS}
+        />
       </FtsrgCornerLogoBadge>
     </FtsrgCornerLogoRoot>
   );

@@ -16,4 +16,4 @@ export interface FtsrgCornerLogoProps {
  * Drawing the slanted end here (rather than clipping the footer with CSS)
  * keeps it pixel-aligned with the badge at every scale.
  */
-export declare function FtsrgCornerLogo({ className, footerColor }: FtsrgCornerLogoProps): import("react").JSX.Element;
+export declare function FtsrgCornerLogo({ className, footerColor, }: FtsrgCornerLogoProps): import("react").JSX.Element;

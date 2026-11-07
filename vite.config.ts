@@ -8,7 +8,13 @@ export default defineConfig({
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
     conditions: ['@seminar/source', ...defaultClientConditions],
-    dedupe: ['react', 'react-dom', '@emotion/react', '@emotion/styled', '@mui/material'],
+    dedupe: [
+      'react',
+      'react-dom',
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/material',
+    ],
   },
   plugins: [
     seminar({

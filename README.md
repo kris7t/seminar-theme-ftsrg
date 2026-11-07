@@ -13,7 +13,7 @@ npm install git+https://github.com/kris7t/seminar-theme-ftsrg.git
 Then select it for every deck in `vite.config.ts`:
 
 ```ts
-seminar({ defaultTheme: 'seminar-theme-ftsrg' })
+seminar({ defaultTheme: 'seminar-theme-ftsrg' });
 ```
 
 Or for a single deck in its frontmatter:

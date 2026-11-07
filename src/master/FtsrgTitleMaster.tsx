@@ -1,9 +1,9 @@
-import { TitleMasterProps } from "@seminar/core";
+import type { TitleMasterProps } from '@seminar/core';
 import { styled } from '@mui/material/styles';
-import { useThemeProps } from "@mui/material";
+import { useThemeProps } from '@mui/material';
 
-import titleBackground from "../../assets/title-background.avif";
-import titleBackgroundTop from "../../assets/title-background-top.avif";
+import titleBackground from '../../assets/title-background.avif';
+import titleBackgroundTop from '../../assets/title-background-top.avif';
 
 // Position of the dark background block of the title slide. Other masters
 // reuse it to show parts of the same background in exactly the same place.
@@ -44,7 +44,7 @@ const FtsrgTitleMasterBody = styled('main', {
   width: '100%',
   height: TITLE_BACKGROUND_HEIGHT,
   color: theme.palette.primary.contrastText,
-  backgroundImage: `url(${titleBackground}), radial-gradient(circle at ${TITLE_GRADIENT.x * 100}% ${TITLE_GRADIENT.y * 100}%, ${TITLE_GRADIENT.inner} 0%, ${TITLE_GRADIENT.outer} 100%)`,
+  backgroundImage: `url(${titleBackground}), radial-gradient(circle at ${String(TITLE_GRADIENT.x * 100)}% ${String(TITLE_GRADIENT.y * 100)}%, ${TITLE_GRADIENT.inner} 0%, ${TITLE_GRADIENT.outer} 100%)`,
   backgroundSize: 'contain',
   gap: theme.spacing(3),
   padding: theme.spacing(0, 16),
@@ -72,12 +72,19 @@ const FtsrgTitleMasterSubtitle = styled('div', {
 }));
 
 export function FtsrgTitleMaster(inProps: TitleMasterProps) {
-  const { title, children } = useThemeProps({ props: inProps, name: 'FtsrgTitleMaster' });
+  const { title, children } = useThemeProps({
+    props: inProps,
+    name: 'FtsrgTitleMaster',
+  });
   return (
     <FtsrgTitleMasterRoot>
       <FtsrgTitleMasterBody>
-        {title && <FtsrgTitleMasterTitle>{title}</FtsrgTitleMasterTitle>}
-        {children && <FtsrgTitleMasterSubtitle>{children}</FtsrgTitleMasterSubtitle>}
+        {title !== undefined && (
+          <FtsrgTitleMasterTitle>{title}</FtsrgTitleMasterTitle>
+        )}
+        {children !== undefined && (
+          <FtsrgTitleMasterSubtitle>{children}</FtsrgTitleMasterSubtitle>
+        )}
       </FtsrgTitleMasterBody>
     </FtsrgTitleMasterRoot>
   );

@@ -1,16 +1,21 @@
-import { Paragraph, SLIDE_HEIGHT, SLIDE_WIDTH, type SlideMasterProps } from "@seminar/core";
+import {
+  Paragraph,
+  SLIDE_HEIGHT,
+  SLIDE_WIDTH,
+  type SlideMasterProps,
+} from '@seminar/core';
 import { styled, useTheme } from '@mui/material/styles';
-import { useThemeProps } from "@mui/material";
-import { Children, isValidElement, useId, type ReactNode } from "react";
+import { useThemeProps } from '@mui/material';
+import { Children, isValidElement, useId, type ReactNode } from 'react';
 
-import { SLANT_GAP, SLANT_TAN } from "../design";
-import { FtsrgSlideMaster } from "./FtsrgSlideMaster";
+import { SLANT_GAP, SLANT_TAN } from '../design';
+import { FtsrgSlideMaster } from './FtsrgSlideMaster';
 import {
   TITLE_BACKGROUND_HEIGHT,
   TITLE_BACKGROUND_IMAGE,
   TITLE_BACKGROUND_TOP,
   TITLE_GRADIENT,
-} from "./FtsrgTitleMaster";
+} from './FtsrgTitleMaster';
 
 // The block on the left is vertically centered on the slide. At its mid-height,
 // the gap between the block and the outline on the right is centered on the
@@ -30,7 +35,8 @@ const OUTLINE_BOTTOM = BLOCK_BOTTOM - OUTLINE_WIDTH / 2;
 const OUTLINE_SLANTED_WIDTH = OUTLINE_WIDTH * Math.hypot(1, SLANT_TAN);
 // The stroke is centered on its path, so we move the slanted side of the path
 // away from the gap by half of the stroke's horizontal width.
-const OUTLINE_MID_X = SLIDE_WIDTH / 2 + SLANT_GAP / 2 + OUTLINE_SLANTED_WIDTH / 2;
+const OUTLINE_MID_X =
+  SLIDE_WIDTH / 2 + SLANT_GAP / 2 + OUTLINE_SLANTED_WIDTH / 2;
 const BLOCK_OUTLINE_MID_X = BLOCK_MID_X - OUTLINE_SLANTED_WIDTH / 2;
 
 /** The x coordinate at height y of a slanted edge that is at midX in the middle. */
@@ -105,7 +111,10 @@ const FtsrgSectionMasterBlock = styled('div', {
 // Further content inside the outline, starting after the slanted edge where it
 // leaves the least space (at the top), and aligned to the right with the
 // content of the other slides.
-const OUTLINE_INNER_LEFT = slantX(OUTLINE_MID_X + OUTLINE_SLANTED_WIDTH / 2, BLOCK_TOP + OUTLINE_WIDTH);
+const OUTLINE_INNER_LEFT = slantX(
+  OUTLINE_MID_X + OUTLINE_SLANTED_WIDTH / 2,
+  BLOCK_TOP + OUTLINE_WIDTH,
+);
 
 const FtsrgSectionMasterAside = styled('div', {
   name: 'FtsrgSectionMaster',
@@ -152,7 +161,9 @@ const FtsrgSectionMasterSubtitle = styled('div', {
 function SectionBackground({ filled }: VariantProps) {
   const { palette } = useTheme();
   return (
-    <FtsrgSectionMasterBackground viewBox={`0 0 ${SLIDE_WIDTH} ${SLIDE_HEIGHT}`}>
+    <FtsrgSectionMasterBackground
+      viewBox={`0 0 ${String(SLIDE_WIDTH)} ${String(SLIDE_HEIGHT)}`}
+    >
       {filled ? (
         <FilledBlock />
       ) : (
@@ -183,10 +194,14 @@ function FilledBlock() {
   // clip it to the block. Unlike a <pattern>, this draws the image at the
   // resolution of the screen, like the CSS background of the title slide.
   const gradientX = SLIDE_WIDTH * TITLE_GRADIENT.x;
-  const gradientY = TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT * TITLE_GRADIENT.y;
+  const gradientY =
+    TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT * TITLE_GRADIENT.y;
   const gradientRadius = Math.hypot(
     Math.max(gradientX, SLIDE_WIDTH - gradientX),
-    Math.max(gradientY - TITLE_BACKGROUND_TOP, TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT - gradientY),
+    Math.max(
+      gradientY - TITLE_BACKGROUND_TOP,
+      TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT - gradientY,
+    ),
   );
   return (
     <>
@@ -234,6 +249,7 @@ function isParagraph(node: ReactNode): boolean {
  * a paragraph, and the rest. Ignores the whitespace between elements.
  */
 function splitSubtitle(children: ReactNode): [ReactNode, ReactNode[]] {
+  // eslint-disable-next-line @eslint-react/no-children-to-array -- The master splits the content of the slide.
   const nodes = Children.toArray(children).filter(
     (child) => typeof child !== 'string' || child.trim() !== '',
   );
@@ -244,16 +260,27 @@ function splitSubtitle(children: ReactNode): [ReactNode, ReactNode[]] {
   return [undefined, nodes];
 }
 
-function SectionLayout({ title, children, filled, ...props }: SlideMasterProps & VariantProps) {
+function SectionLayout({
+  title,
+  children,
+  filled,
+  ...props
+}: SlideMasterProps & VariantProps) {
   const [subtitle, rest] = splitSubtitle(children);
   return (
     <FtsrgSlideMaster {...props}>
       <SectionBackground filled={filled} />
       <FtsrgSectionMasterBlock filled={filled}>
-        {title !== undefined && <FtsrgSectionMasterTitle>{title}</FtsrgSectionMasterTitle>}
-        {subtitle !== undefined && <FtsrgSectionMasterSubtitle>{subtitle}</FtsrgSectionMasterSubtitle>}
+        {title !== undefined && (
+          <FtsrgSectionMasterTitle>{title}</FtsrgSectionMasterTitle>
+        )}
+        {subtitle !== undefined && (
+          <FtsrgSectionMasterSubtitle>{subtitle}</FtsrgSectionMasterSubtitle>
+        )}
       </FtsrgSectionMasterBlock>
-      {rest.length > 0 && <FtsrgSectionMasterAside>{rest}</FtsrgSectionMasterAside>}
+      {rest.length > 0 && (
+        <FtsrgSectionMasterAside>{rest}</FtsrgSectionMasterAside>
+      )}
     </FtsrgSlideMaster>
   );
 }
@@ -264,6 +291,9 @@ export function FtsrgSectionMaster(inProps: SlideMasterProps) {
 }
 
 export function FtsrgSubsectionMaster(inProps: SlideMasterProps) {
-  const props = useThemeProps({ props: inProps, name: 'FtsrgSubsectionMaster' });
+  const props = useThemeProps({
+    props: inProps,
+    name: 'FtsrgSubsectionMaster',
+  });
   return <SectionLayout {...props} filled={false} />;
 }

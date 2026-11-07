@@ -1,0 +1,47 @@
+// @ts-check
+import eslint from '@eslint/js';
+import eslintReact from '@eslint-react/eslint-plugin';
+import prettier from 'eslint-config-prettier/flat';
+import reactHooks from 'eslint-plugin-react-hooks';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+export default defineConfig(
+  globalIgnores(['dist/', 'lib/', 'node_modules/']),
+  eslint.configs.recommended,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
+  {
+    languageOptions: {
+      globals: globals.node,
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['*.js'],
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/consistent-type-exports': 'error',
+      '@typescript-eslint/no-import-type-side-effects': 'error',
+      '@typescript-eslint/switch-exhaustiveness-check': 'error',
+    },
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    extends: [
+      eslintReact.configs['recommended-type-checked'],
+      reactHooks.configs.flat.recommended,
+    ],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+  {
+    files: ['**/*.{js,mjs}'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
+  prettier,
+);
