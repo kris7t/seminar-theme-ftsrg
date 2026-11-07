@@ -3,12 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "seminar": {},
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "files": [
+    "lib",
+    "assets"
+  ],
   "engines": {
     "node": "^22.22.2 || >=24"
   },
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
     "preview": "seminar preview",
     "present": "seminar present",
     "pdf": "npm run build && seminar pdf",

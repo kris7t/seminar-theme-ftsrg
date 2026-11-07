@@ -1,27 +1,50 @@
 # seminar-theme-ftsrg
 
-Requires Node.js 22 or newer.
+Seminar theme of the Critical Systems Research Group (FTSRG).
 
-Run `npm install` first if you skipped dependency installation during setup
-or are setting up a fresh checkout.
+## Using the theme
+
+Install the theme in a Seminar project from its git repository:
 
 ```sh
-npm run preview
+npm install git+https://github.com/kris7t/seminar-theme-ftsrg.git
 ```
 
-Edit `decks/index.deck.mdx` while the preview is open, and it updates as you
-save. Run `npm run dev` to preview it in a browser instead.
-Imports such as `@/MyComponent` resolve to `src/MyComponent`.
+Then select it for every deck in `vite.config.ts`:
 
-Edit `src/theme.ts` to customize the theme and fonts.
+```ts
+seminar({ defaultTheme: 'seminar-theme-ftsrg' })
+```
 
-Run `npm run build` to create `dist/index.html`, a self-contained presentation
-that you can open in a browser or share.
-Toggle `selfContained` in `vite.config.ts` to change the build format.
+Or for a single deck in its frontmatter:
 
-Run `npm run present` to build the presentation and present it.
+```yaml
+theme: seminar-theme-ftsrg
+```
 
-Run `npm run pdf` to build the presentation and save it as `dist/index.pdf`.
+## Developing the theme
 
+Requires Node.js 22.22.2 or newer.
+
+The development dependencies link to the Seminar packages in an adjacent
+checkout of [Seminar](https://github.com/kris7t/seminar), so clone and build it
+next to this repository first:
+
+```sh
+git clone https://github.com/kris7t/seminar.git ../seminar
+(cd ../seminar && npm install && npm run build)
+npm install
+```
+
+The theme is in `src/`, starting from `src/index.ts`. The demo presentation in
+`decks/index.deck.mdx` uses the sources directly, so you can test changes with:
+
+- `npm run preview` to preview the demo, which updates as you save,
+- `npm run dev` to preview it in a browser instead,
+- `npm run build` to build it into `dist/index.html`.
+
+The package itself is the built `lib/`, which is committed so that the theme
+can be installed from git. After changing the theme, run `npm run build:lib`
+and commit `lib/` with the changes.
 
 [Seminar documentation](https://seminar.run)

@@ -2,8 +2,8 @@ import { TitleMasterProps } from "@seminar/core";
 import { styled } from '@mui/material/styles';
 import { useThemeProps } from "@mui/material";
 
-import titleBackground from "./title-background.avif";
-import titleBackgroundTop from "./title-background-top.avif";
+import titleBackground from "../../assets/title-background.avif";
+import titleBackgroundTop from "../../assets/title-background-top.avif";
 
 // Position of the dark background block of the title slide. Other masters
 // reuse it to show parts of the same background in exactly the same place.
