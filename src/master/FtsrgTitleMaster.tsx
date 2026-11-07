@@ -5,6 +5,20 @@ import { useThemeProps } from "@mui/material";
 import titleBackground from "./title-background.avif";
 import titleBackgroundTop from "./title-background-top.avif";
 
+// Position of the dark background block of the title slide. Other masters
+// reuse it to show parts of the same background in exactly the same place.
+export const TITLE_BACKGROUND_TOP = 80;
+export const TITLE_BACKGROUND_HEIGHT = 480;
+export const TITLE_BACKGROUND_IMAGE = titleBackground;
+// Radial gradient under the image, centered at (x, y) relative to the block,
+// fading from INNER to OUTER at the farthest corner.
+export const TITLE_GRADIENT = {
+  x: 0.4,
+  y: 0.5,
+  inner: '#1a191a',
+  outer: '#2d2f2e',
+};
+
 const FtsrgTitleMasterRoot = styled('section', {
   name: 'FtsrgTitleMaster',
   slot: 'Root',
@@ -23,12 +37,14 @@ const FtsrgTitleMasterBody = styled('main', {
   name: 'FtsrgTitleMaster',
   slot: 'Body',
 })(({ theme }) => ({
-  marginTop: '80px',
-  width: '100%',
-  height: '480px',
-  backgroundImage: `url(${titleBackground}), radial-gradient(circle at 40% 50%, #1a191a 0%, #2d2f2e 100%)`,
-  backgroundSize: 'contain',
+  display: 'flex',
   flexDirection: 'column',
+  marginTop: TITLE_BACKGROUND_TOP,
+  width: '100%',
+  height: TITLE_BACKGROUND_HEIGHT,
+  color: theme.palette.primary.contrastText,
+  backgroundImage: `url(${titleBackground}), radial-gradient(circle at ${TITLE_GRADIENT.x * 100}% ${TITLE_GRADIENT.y * 100}%, ${TITLE_GRADIENT.inner} 0%, ${TITLE_GRADIENT.outer} 100%)`,
+  backgroundSize: 'contain',
   gap: theme.spacing(4),
   padding: theme.spacing(8, 16),
 }));
@@ -39,7 +55,6 @@ const FtsrgTitleMasterTitle = styled('h1', {
 })(({ theme }) => ({
   ...theme.typography.h1,
   margin: 0,
-  color: theme.palette.primary.contrastText,
 }));
 
 const FtsrgTitleMasterSubtitle = styled('div', {
@@ -47,7 +62,9 @@ const FtsrgTitleMasterSubtitle = styled('div', {
   slot: 'Subtitle',
 })(({ theme }) => ({
   ...theme.typography.subtitle1,
-  color: theme.palette.primary.contrastText,
+  '& > *': {
+    margin: 0,
+  },
 }));
 
 export function FtsrgTitleMaster(inProps: TitleMasterProps) {
@@ -56,7 +73,7 @@ export function FtsrgTitleMaster(inProps: TitleMasterProps) {
     <FtsrgTitleMasterRoot>
       <FtsrgTitleMasterBody>
         {title && <FtsrgTitleMasterTitle>{title}</FtsrgTitleMasterTitle>}
-        <FtsrgTitleMasterSubtitle>{children}</FtsrgTitleMasterSubtitle>
+        {children && <FtsrgTitleMasterSubtitle>{children}</FtsrgTitleMasterSubtitle>}
       </FtsrgTitleMasterBody>
     </FtsrgTitleMasterRoot>
   );

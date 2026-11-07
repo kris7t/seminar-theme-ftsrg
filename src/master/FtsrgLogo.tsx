@@ -1,6 +1,8 @@
 import { useId, type SVGProps } from 'react';
 import { styled } from '@mui/material/styles';
 
+import { SLANT_GAP, SLANT_TAN } from '../design';
+
 // Glyph outlines from ftsrg.svg, inlined so that the logo ends up in the
 // single-file bundle without any asset handling.
 const LOGO_PATHS = [
@@ -44,17 +46,13 @@ export function FtsrgLogo({ role = 'img', ...props }: SVGProps<SVGSVGElement>) {
   );
 }
 
-// Corner badge geometry, in viewBox units where the badge is BADGE_HEIGHT tall.
-// All proportions are measured from the FTSRG PowerPoint template.
+// Corner badge geometry, in CSS pixels (the badge is always BADGE_HEIGHT tall,
+// which matches the height of the footer). All proportions are measured from
+// the FTSRG PowerPoint template.
 const BADGE_HEIGHT = 48;
 // Width of the badge along its bottom edge.
 const BADGE_WIDTH = 107.6;
-// Slant of the badge's left edge, measured from the vertical.
-const SLANT_ANGLE_DEG = 21.4;
-const SLANT_TAN = Math.tan((SLANT_ANGLE_DEG * Math.PI) / 180);
 const BADGE_SLANT = BADGE_HEIGHT * SLANT_TAN;
-// Horizontal width of the gap between the footer and the badge.
-const BADGE_GAP = 12.9;
 // The logo is centered vertically with LOGO_PADDING_Y above and below it,
 // and its center is LOGO_CENTER_X away from the right edge of the badge.
 const LOGO_PADDING_Y = 5.96;
@@ -69,7 +67,7 @@ const BADGE_BLEED = 2;
 // The SVG also draws the slanted end of the footer, and starts where the
 // footer's rectangular part ends. We overlap them a bit to avoid a seam.
 const FOOTER_OVERLAP = 2;
-const VIEW_BOX_X = -BADGE_GAP;
+const VIEW_BOX_X = -SLANT_GAP;
 const VIEW_BOX_WIDTH = BADGE_WIDTH - VIEW_BOX_X;
 // The gradient starts flat at GRADIENT_START in the top-left of the badge,
 // then ramps linearly to GRADIENT_END at the bottom-right corner over
@@ -101,7 +99,7 @@ const FOCUS_RING_INSET = 2;
 const FOCUS_RING_WIDTH = 1;
 // Horizontal offset that moves the slanted edge FOCUS_RING_INSET inwards.
 const FOCUS_RING_SLANT_INSET =
-  FOCUS_RING_INSET / Math.cos((SLANT_ANGLE_DEG * Math.PI) / 180);
+  FOCUS_RING_INSET * Math.hypot(1, SLANT_TAN);
 const FOCUS_RING_POINTS = [
   [BADGE_SLANT * (1 - FOCUS_RING_INSET / BADGE_HEIGHT) + FOCUS_RING_SLANT_INSET, FOCUS_RING_INSET],
   [BADGE_WIDTH - FOCUS_RING_INSET, FOCUS_RING_INSET],
@@ -114,7 +112,7 @@ const FtsrgCornerLogoRoot = styled('svg', {
   slot: 'Root',
 })({
   display: 'block',
-  height: '100%',
+  height: BADGE_HEIGHT,
   overflow: 'visible',
   aspectRatio: `${VIEW_BOX_WIDTH} / ${BADGE_HEIGHT}`,
 });
@@ -185,8 +183,8 @@ export function FtsrgCornerLogo({ className, footerColor }: FtsrgCornerLogoProps
         fill={footerColor}
         points={[
           [VIEW_BOX_X - FOOTER_OVERLAP, 0],
-          [BADGE_SLANT - BADGE_GAP, 0],
-          [-BADGE_GAP, BADGE_HEIGHT],
+          [BADGE_SLANT - SLANT_GAP, 0],
+          [-SLANT_GAP, BADGE_HEIGHT],
           [VIEW_BOX_X - FOOTER_OVERLAP, BADGE_HEIGHT],
         ].join(' ')}
       />
