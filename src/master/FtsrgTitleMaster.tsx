@@ -46,7 +46,7 @@ const FtsrgTitleMasterBody = styled('main', {
   color: theme.palette.primary.contrastText,
   backgroundImage: `url(${titleBackground}), radial-gradient(circle at ${TITLE_GRADIENT.x * 100}% ${TITLE_GRADIENT.y * 100}%, ${TITLE_GRADIENT.inner} 0%, ${TITLE_GRADIENT.outer} 100%)`,
   backgroundSize: 'contain',
-  gap: theme.spacing(4),
+  gap: theme.spacing(3),
   padding: theme.spacing(0, 16),
 }));
 
@@ -64,7 +64,7 @@ const FtsrgTitleMasterSubtitle = styled('div', {
 })(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(4),
+  gap: theme.spacing(1.5),
   ...theme.typography.subtitle1,
   '& > *': {
     margin: 0,

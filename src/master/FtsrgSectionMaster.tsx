@@ -96,7 +96,7 @@ const FtsrgSectionMasterBlock = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  gap: theme.spacing(4),
+  gap: theme.spacing(3),
   // Align with the content of the other slides.
   padding: theme.spacing(0, 8),
   color: filled ? theme.palette.primary.contrastText : undefined,
@@ -119,7 +119,7 @@ const FtsrgSectionMasterAside = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1.5),
   padding: theme.spacing(0, 8, 0, 4),
   '& > *': {
     margin: 0,

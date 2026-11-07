@@ -134,11 +134,19 @@ export default createSlideTheme({
             : {},
       },
     },
+    SeminarCalloutTitle: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          marginBottom: theme.spacing(1.5),
+        }),
+      },
+    },
     SeminarColumn: {
       styleOverrides: {
         heading: ({ theme }) => ({
           fontSize: 32,
           color: theme.palette.primary.main,
+          marginBottom: theme.spacing(1.5),
         }),
       },
     },

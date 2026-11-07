@@ -21,7 +21,7 @@ const FtsrgSlideMasterContent = styled('main', {
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(2),
+  gap: theme.spacing(3),
   padding: theme.spacing(4, 8),
 }));
 
@@ -72,49 +72,55 @@ const FtsrgContentMasterTitle = styled('h1', {
   },
 }));
 
-const FtsrgContentMasterBody = styled('div', {
-  name: 'FtsrgContentMaster',
-  slot: 'Body',
+const FtsrgContentMasterBody = styled("div", {
+  name: "FtsrgContentMaster",
+  slot: "Body",
 })(({ theme }) => ({
   flex: 1,
   minHeight: 0,
-  '& p': { marginBlock: theme.spacing(2) },
-  '& li > p': { marginBlock: 0 },
-  '& li li': {
-    fontSize: 24,
-    listStyleType: 'none',
-    '&::before': {
-      position: 'absolute',
-      content: '"\u2013"',
-      marginLeft: '-1.1em',
-    }
+  "& :is(p, ul, ol, dl, blockquote, pre, figure, table)": {
+    marginBlock: theme.spacing(1.5),
   },
-  '& li li li': {
-    fontSize: 20,
-    listStyleType: 'circle',
-    '&::before': {
-      content: '""',
-      display: 'none',
+  "& li > :is(p, ul, ol, dl, blockquote, pre, figure, table)": {
+    marginBlock: 0,
+  },
+  '& > :not(style):not(:not(style) ~ *)': { marginTop: 0 },
+  '& > :last-child': { marginBottom: 0 },
+  "& li li": {
+    fontSize: 24,
+    listStyleType: "none",
+    "&::before": {
+      position: "absolute",
+      content: '"\u2013"',
+      marginLeft: "-1.1em",
     },
   },
-  '& li li li li': {
-    listStyleType: 'square',
+  "& li li li": {
+    fontSize: 20,
+    listStyleType: "circle",
+    "&::before": {
+      content: '""',
+      display: "none",
+    },
   },
-  '& strong': { color: theme.palette.primary.main },
-  '& a': {
+  "& li li li li": {
+    listStyleType: "square",
+  },
+  "& strong": { color: theme.palette.primary.main },
+  "& a": {
     color: theme.palette.primary.dark,
     fontWeight: theme.typography.fontWeightMedium,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     textDecorationColor: theme.palette.primary.main,
-    textDecorationThickness: '0.08em',
-    textUnderlineOffset: '0.14em',
-    '&:hover': {
+    textDecorationThickness: "0.08em",
+    textUnderlineOffset: "0.14em",
+    "&:hover": {
       color: theme.palette.primary.main,
       backgroundColor: alpha(theme.palette.primary.main, 0.08),
     },
-    '&:focus-visible': {
+    "&:focus-visible": {
       outline: `2px solid ${theme.palette.primary.main}`,
-      outlineOffset: '0.15em',
+      outlineOffset: "0.15em",
       borderRadius: theme.shape.borderRadius,
     },
   },
