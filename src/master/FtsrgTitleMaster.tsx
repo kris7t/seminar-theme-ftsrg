@@ -1,4 +1,4 @@
-import type { TitleMasterProps } from '@seminar/core';
+import { type TitleMasterProps, useDeck, useSlideView } from '@seminar/core';
 import { styled } from '@mui/material/styles';
 import { useThemeProps } from '@mui/material';
 
@@ -32,6 +32,17 @@ const FtsrgTitleMasterRoot = styled('section', {
   backgroundPosition: 'top',
   backgroundRepeat: 'no-repeat',
 });
+
+const FtsrgTitleMasterRunningTitle = styled('div', {
+  name: 'FtsrgTitleMaster',
+  slot: 'RunningTitle',
+})(({ theme }) => ({
+  position: 'absolute',
+  right: theme.spacing(8),
+  top: '40px',
+  transform: 'translate(0, -50%)',
+  fontSize: 24,
+}));
 
 const FtsrgTitleMasterBody = styled('main', {
   name: 'FtsrgTitleMaster',
@@ -76,6 +87,8 @@ export function FtsrgTitleMaster(inProps: TitleMasterProps) {
     props: inProps,
     name: 'FtsrgTitleMaster',
   });
+  const { metadata: { event }, lang } = useDeck();
+  const { lang: slideLang } = useSlideView();
   return (
     <FtsrgTitleMasterRoot>
       <FtsrgTitleMasterBody>
@@ -86,6 +99,11 @@ export function FtsrgTitleMaster(inProps: TitleMasterProps) {
           <FtsrgTitleMasterSubtitle>{children}</FtsrgTitleMasterSubtitle>
         )}
       </FtsrgTitleMasterBody>
+      {event && (
+        <FtsrgTitleMasterRunningTitle {...(lang === slideLang ? {} : { lang })}>
+          {event}
+        </FtsrgTitleMasterRunningTitle>
+      )}
     </FtsrgTitleMasterRoot>
   );
 }

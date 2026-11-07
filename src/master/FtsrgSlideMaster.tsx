@@ -1,5 +1,5 @@
 import type { ContentMasterProps } from '@seminar/core';
-import { useSlideView } from '@seminar/core';
+import { useDeck, useSlideView } from '@seminar/core';
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { useThemeProps } from '@mui/material';
 import { FtsrgCornerLogo } from './FtsrgLogo';
@@ -43,9 +43,20 @@ const FtsrgSlideMasterFooterBackground = styled('div', {
   background: theme.palette.neutral.main,
 }));
 
+const FtsrgSlideMasterRunningTitle = styled('div', {
+  name: 'FtsrgSlideMaster',
+  slot: 'RunningTitle',
+})(({ theme }) => ({
+  position: 'absolute',
+  left: theme.spacing(4),
+  top: '50%',
+  transform: 'translate(0, -50%)',
+  fontSize: 18,
+}));
+
 const FtsrgSlideMasterSlideNumber = styled('div', {
-  name: 'FtsrgSlideNumber',
-  slot: 'Footer',
+  name: 'FtsrgSlideMaster',
+  slot: 'SlideNumber',
 })({
   position: 'absolute',
   left: '50%',
@@ -132,13 +143,19 @@ export function FtsrgSlideMaster({
   children,
   showSlideNumber = true,
 }: Omit<ContentMasterProps, 'title'>) {
-  const { index } = useSlideView();
+  const { metadata: { event }, lang } = useDeck();
+  const { index, lang: slideLang } = useSlideView();
   const { palette } = useTheme();
   return (
     <FtsrgSlideMasterRoot className={className}>
       <FtsrgSlideMasterContent>{children}</FtsrgSlideMasterContent>
       <FtsrgSlideMasterFooter>
         <FtsrgSlideMasterFooterBackground />
+        {event && (
+          <FtsrgSlideMasterRunningTitle {...(lang === slideLang ? {} : { lang })}>
+            {event}
+          </FtsrgSlideMasterRunningTitle>
+        )}
         {showSlideNumber && (
           <FtsrgSlideMasterSlideNumber>{index + 1}</FtsrgSlideMasterSlideNumber>
         )}
