@@ -1,7 +1,7 @@
 import { generateUtilityClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { FtsrgColorLogo } from './FtsrgLogo';
+import { FtsrgColorLogo, LOGO_COLOR } from './FtsrgLogo';
 import { FtsrgName } from './FtsrgName';
 
 import bmeLogo from '../../assets/bme-logo.avif';
@@ -73,7 +73,7 @@ const LogosLabel = styled(FtsrgName, {
   marginInlineStart: 16,
   fontSize: 22.75,
   lineHeight: '28px',
-  color: '#000',
+  color: LOGO_COLOR,
 });
 
 const LOGO_HEIGHT = 64;

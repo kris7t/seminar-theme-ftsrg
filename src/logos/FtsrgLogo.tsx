@@ -31,8 +31,8 @@ export const LOGO_VIEW_BOX_WIDTH = 84.051;
 export const LOGO_VIEW_BOX_HEIGHT = 44.95;
 export const LOGO_VIEW_BOX = `0 0 ${String(LOGO_VIEW_BOX_WIDTH)} ${String(LOGO_VIEW_BOX_HEIGHT)}`;
 
-const LOGO_COLOR = '#100f0d';
-const LOGO_ACCENT_COLOR = '#8e162b';
+export const LOGO_COLOR = '#100f0d';
+export const LOGO_ACCENT_COLOR = '#8e162b';
 
 export function LogoGlyphs({
   accentColor = 'currentColor',

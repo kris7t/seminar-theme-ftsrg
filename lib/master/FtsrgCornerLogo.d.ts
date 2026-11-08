@@ -1,8 +1,3 @@
-import { type SVGProps } from 'react';
-/**
- * The bare ftsrg wordmark, filled with `currentColor`.
- */
-export declare function FtsrgLogo({ role, ...props }: SVGProps<SVGSVGElement>): import("react").JSX.Element;
 export interface FtsrgCornerLogoProps {
     className?: string;
     /** Color of the footer that ends in a slant in front of the badge. */

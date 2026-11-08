@@ -5,7 +5,12 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { Children, type ReactNode } from 'react';
 
-import { FtsrgLogo } from '../logos/FtsrgLogo';
+import {
+  FtsrgColorLogo,
+  FtsrgLogo,
+  LOGO_COLOR,
+  LOGO_ACCENT_COLOR,
+} from '../logos/FtsrgLogo';
 import {
   FtsrgName,
   NAME_FONT_ASCENT,
@@ -48,17 +53,27 @@ const LINKS = [
 
 // Slide class that hides the links at the bottom, e.g., `{statement .nolinks}`.
 const NO_LINKS_CLASS = 'nolinks';
+// Slide class for a white background instead of a black one.
+const LIGHT_CLASS = 'light';
+
+interface VariantProps {
+  /** Whether the slide has a white background. */
+  light: boolean;
+}
+
+const shouldForwardVariantProp = (prop: PropertyKey) => prop !== 'light';
 
 const FtsrgStatementMasterRoot = styled('section', {
   name: 'FtsrgStatementMaster',
   slot: 'Root',
-})({
+  shouldForwardProp: shouldForwardVariantProp,
+})<VariantProps>(({ theme, light }) => ({
   position: 'relative',
   width: '100%',
   height: '100%',
-  backgroundColor: '#000',
-  color: '#fff',
-});
+  backgroundColor: light ? '#fff' : '#000',
+  color: light ? theme.palette.text.primary : '#fff',
+}));
 
 // The body is centered on the whole slide, and leaves room for the links at
 // the bottom with equal padding at the top.
@@ -77,24 +92,34 @@ const FtsrgStatementMasterBody = styled('main', {
   textAlign: 'center',
 }));
 
+// On a white background, the name has the same color as the full-color logo.
 const FtsrgStatementMasterBrand = styled('div', {
   name: 'FtsrgStatementMaster',
   slot: 'Brand',
-})({
+  shouldForwardProp: shouldForwardVariantProp,
+})<VariantProps>(({ light }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'flex-start',
   gap: 64,
-});
+  color: light ? LOGO_COLOR : undefined,
+}));
+
+const logoStyle = {
+  display: 'block',
+  height: LOGO_HEIGHT,
+  marginTop: NAME_CAP_TOP,
+};
 
 const FtsrgStatementMasterLogo = styled(FtsrgLogo, {
   name: 'FtsrgStatementMaster',
   slot: 'Logo',
-})({
-  display: 'block',
-  height: LOGO_HEIGHT,
-  marginTop: NAME_CAP_TOP,
-});
+})(logoStyle);
+
+const FtsrgStatementMasterColorLogo = styled(FtsrgColorLogo, {
+  name: 'FtsrgStatementMaster',
+  slot: 'Logo',
+})(logoStyle);
 
 const FtsrgStatementMasterName = styled(FtsrgName, {
   name: 'FtsrgStatementMaster',
@@ -129,7 +154,8 @@ const FtsrgStatementMasterContent = styled('div', {
 const FtsrgStatementMasterLinks = styled('nav', {
   name: 'FtsrgStatementMaster',
   slot: 'Links',
-})(({ theme }) => ({
+  shouldForwardProp: shouldForwardVariantProp,
+})<VariantProps>(({ theme, light }) => ({
   position: 'absolute',
   left: 0,
   right: 0,
@@ -137,12 +163,16 @@ const FtsrgStatementMasterLinks = styled('nav', {
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-evenly',
+  ...(light && {
+    color: LOGO_COLOR,
+  }),
 }));
 
 const FtsrgStatementMasterLink = styled('a', {
   name: 'FtsrgStatementMaster',
   slot: 'Link',
-})(({ theme }) => ({
+  shouldForwardProp: shouldForwardVariantProp,
+})<VariantProps>(({ theme, light }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -158,9 +188,12 @@ const FtsrgStatementMasterLink = styled('a', {
     textDecoration: 'underline',
     textDecorationThickness: '0.08em',
     textUnderlineOffset: '0.14em',
+    ...(light && {
+      textDecorationColor: LOGO_ACCENT_COLOR,
+    }),
   },
   '&:focus-visible': {
-    outline: '2px solid currentColor',
+    outline: `2px solid ${light ? LOGO_ACCENT_COLOR : 'currentColor'}`,
     outlineOffset: '0.15em',
     borderRadius: theme.shape.borderRadius,
   },
@@ -178,7 +211,8 @@ function hasContent(children: ReactNode): boolean {
  * Slide master for statements on a black background, e.g., at the end of a
  * presentation, with links to the research group at the bottom. Without a
  * title or content, it shows the logo and the name of the research group.
- * The `nolinks` class of the slide hides the links.
+ * The `nolinks` class of the slide hides the links, and the `light` class
+ * sets a white background with the full-color logo.
  */
 export function FtsrgStatementMaster(inProps: SlideMasterProps) {
   const { title, children, className } = useThemeProps({
@@ -187,13 +221,19 @@ export function FtsrgStatementMaster(inProps: SlideMasterProps) {
   });
   const { lang } = useSlideView();
   const showContent = hasContent(children);
-  const showLinks = !className?.split(/\s+/).includes(NO_LINKS_CLASS);
+  const classes = className?.split(/\s+/) ?? [];
+  const showLinks = !classes.includes(NO_LINKS_CLASS);
+  const light = classes.includes(LIGHT_CLASS);
   return (
-    <FtsrgStatementMasterRoot className={className}>
+    <FtsrgStatementMasterRoot className={className} light={light}>
       <FtsrgStatementMasterBody>
         {title === undefined && !showContent ? (
-          <FtsrgStatementMasterBrand>
-            <FtsrgStatementMasterLogo />
+          <FtsrgStatementMasterBrand light={light}>
+            {light ? (
+              <FtsrgStatementMasterColorLogo />
+            ) : (
+              <FtsrgStatementMasterLogo />
+            )}
             <FtsrgStatementMasterName lang={lang} />
           </FtsrgStatementMasterBrand>
         ) : (
@@ -210,13 +250,14 @@ export function FtsrgStatementMaster(inProps: SlideMasterProps) {
         )}
       </FtsrgStatementMasterBody>
       {showLinks && (
-        <FtsrgStatementMasterLinks>
+        <FtsrgStatementMasterLinks light={light}>
           {LINKS.map(({ href, label, Icon, title: iconTitle }) => (
             <FtsrgStatementMasterLink
               key={href}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
+              light={light}
             >
               <Icon titleAccess={iconTitle} />
               {label}

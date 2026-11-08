@@ -64,7 +64,7 @@ export default createSlideTheme({
     },
     neutral: {
       main: '#a7a8a7',
-      dark: '#535453',
+      dark: '#2f2d2e',
       light: '#dcdcdc',
       contrastText: '#000',
     },
