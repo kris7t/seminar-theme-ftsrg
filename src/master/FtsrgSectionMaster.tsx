@@ -128,7 +128,7 @@ const FtsrgSectionMasterAside = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  gap: theme.spacing(1.5),
+  gap: theme.spacing(3),
   padding: theme.spacing(0, 8, 0, 4),
   '& > *': {
     margin: 0,

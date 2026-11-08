@@ -48,7 +48,7 @@ const FtsrgSlideMasterRunningTitle = styled('div', {
   slot: 'RunningTitle',
 })(({ theme }) => ({
   position: 'absolute',
-  left: theme.spacing(4),
+  left: theme.spacing(1.5),
   top: '50%',
   transform: 'translate(0, -50%)',
   fontSize: 18,

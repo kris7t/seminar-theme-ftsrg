@@ -38,7 +38,7 @@ const FtsrgTitleMasterRunningTitle = styled('div', {
   slot: 'RunningTitle',
 })(({ theme }) => ({
   position: 'absolute',
-  right: theme.spacing(8),
+  right: theme.spacing(5),
   top: '40px',
   transform: 'translate(0, -50%)',
   fontSize: 24,
@@ -75,7 +75,7 @@ const FtsrgTitleMasterSubtitle = styled('div', {
 })(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(1.5),
+  gap: theme.spacing(3),
   ...theme.typography.subtitle1,
   '& > *': {
     margin: 0,
