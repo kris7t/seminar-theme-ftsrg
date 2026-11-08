@@ -2,7 +2,7 @@ import type { ContentMasterProps } from '@seminar/core';
 import { useDeck, useSlideView } from '@seminar/core';
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import { useThemeProps } from '@mui/material';
-import { FtsrgCornerLogo } from './FtsrgLogo';
+import { FtsrgCornerLogo } from './FtsrgCornerLogo';
 
 const FtsrgSlideMasterRoot = styled('section', {
   name: 'FtsrgSlideMaster',
@@ -143,7 +143,10 @@ export function FtsrgSlideMaster({
   children,
   showSlideNumber = true,
 }: Omit<ContentMasterProps, 'title'>) {
-  const { metadata: { event }, lang } = useDeck();
+  const {
+    metadata: { event },
+    lang,
+  } = useDeck();
   const { index, lang: slideLang } = useSlideView();
   const { palette } = useTheme();
   return (
@@ -152,7 +155,9 @@ export function FtsrgSlideMaster({
       <FtsrgSlideMasterFooter>
         <FtsrgSlideMasterFooterBackground />
         {event && (
-          <FtsrgSlideMasterRunningTitle {...(lang === slideLang ? {} : { lang })}>
+          <FtsrgSlideMasterRunningTitle
+            {...(lang === slideLang ? {} : { lang })}
+          >
             {event}
           </FtsrgSlideMasterRunningTitle>
         )}

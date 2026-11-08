@@ -1,6 +1,8 @@
 import { generateUtilityClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+import { FtsrgColorLogo } from './FtsrgLogo';
+
 import bmeLogo from '../../assets/bme-logo.avif';
 import vikLogo from '../../assets/vik-logo.avif';
 import vikLabelEn from '../../assets/vik-label-en.avif';
@@ -8,7 +10,6 @@ import vikLabelHu from '../../assets/vik-label-hu.avif';
 import mitLogo from '../../assets/mit-logo.avif';
 import mitLabelEn from '../../assets/mit-label-en.avif';
 import mitLabelHu from '../../assets/mit-label-hu.avif';
-import ftsrgLogo from '../../assets/ftsrg-logo.avif';
 import ftsrgLabelEn from '../../assets/ftsrg-label-en.avif';
 import ftsrgLabelHu from '../../assets/ftsrg-label-hu.avif';
 
@@ -45,7 +46,7 @@ const LogosSeparator = styled('div', {
   name: 'FtsrgLogos',
   slot: 'Separator',
   shouldForwardProp: (prop) => prop !== 'color',
-})<{ color: string; }>(({ color }) => ({
+})<{ color: string }>(({ color }) => ({
   height: '46px',
   width: '1px',
   backgroundColor: color,
@@ -63,6 +64,9 @@ const LogosLink = styled('a', {
 });
 
 const LOGO_HEIGHT = 64;
+// The vector ftsrg logo has no padding around the glyphs, so we add the same
+// amount of padding as in the raster logos (2.5px for a 170px tall image).
+const FTSRG_LOGO_INSET = LOGO_HEIGHT * (2.5 / 170);
 
 export function Logos({
   lang = 'en',
@@ -172,10 +176,11 @@ export function Logos({
         aria-label={labels.ftsrg}
         className={logosClasses.link}
       >
-        <img
-          src={ftsrgLogo}
-          height={LOGO_HEIGHT}
-          alt=""
+        <FtsrgColorLogo
+          height={LOGO_HEIGHT - 2 * FTSRG_LOGO_INSET}
+          role="presentation"
+          aria-label={undefined}
+          style={{ margin: FTSRG_LOGO_INSET }}
           className={logosClasses.image}
         />
         {!compact && (

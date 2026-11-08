@@ -152,7 +152,9 @@ export function FtsrgTitleMaster(inProps: TitleMasterProps) {
       </FtsrgTitleMasterBody>
       <FtsrgTitleMasterFooter>
         {event && (
-          <FtsrgTitleMasterRunningTitle {...(lang === slideLang ? {} : { lang })}>
+          <FtsrgTitleMasterRunningTitle
+            {...(lang === slideLang ? {} : { lang })}
+          >
             {event}
           </FtsrgTitleMasterRunningTitle>
         )}
