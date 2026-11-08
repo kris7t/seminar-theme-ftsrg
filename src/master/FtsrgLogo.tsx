@@ -54,14 +54,14 @@ export function FtsrgLogo({ role = 'img', ...props }: SVGProps<SVGSVGElement>) {
 // Corner badge geometry, in CSS pixels (the badge is always BADGE_HEIGHT tall,
 // which matches the height of the footer). All proportions are measured from
 // the FTSRG PowerPoint template.
-const BADGE_HEIGHT = 48;
+const BADGE_HEIGHT = 46;
 // Width of the badge along its bottom edge.
-const BADGE_WIDTH = 107.6;
+const BADGE_WIDTH = 103.12;
 const BADGE_SLANT = BADGE_HEIGHT * SLANT_TAN;
 // The logo is centered vertically with LOGO_PADDING_Y above and below it,
 // and its center is LOGO_CENTER_X away from the right edge of the badge.
-const LOGO_PADDING_Y = 5.96;
-const LOGO_CENTER_X = 46;
+const LOGO_PADDING_Y = 5.71;
+const LOGO_CENTER_X = 44.08;
 const LOGO_HEIGHT = BADGE_HEIGHT - 2 * LOGO_PADDING_Y;
 const LOGO_WIDTH = LOGO_HEIGHT * (LOGO_VIEW_BOX_WIDTH / LOGO_VIEW_BOX_HEIGHT);
 const LOGO_X = BADGE_WIDTH - LOGO_CENTER_X - LOGO_WIDTH / 2;
@@ -81,7 +81,7 @@ const VIEW_BOX_WIDTH = BADGE_WIDTH - VIEW_BOX_X;
 const GRADIENT_START = '#283c88';
 const GRADIENT_END = '#5f2c60';
 const GRADIENT_ANGLE_DEG = 64.2;
-const GRADIENT_LENGTH = 61.15;
+const GRADIENT_LENGTH = 58.6;
 const GRADIENT_DX =
   GRADIENT_LENGTH * Math.cos((GRADIENT_ANGLE_DEG * Math.PI) / 180);
 const GRADIENT_DY =
