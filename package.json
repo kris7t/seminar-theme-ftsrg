@@ -41,14 +41,14 @@
     "react-dom": "^19.3.1"
   },
   "dependencies": {
-    "@fontsource-variable/open-sans": "^5.3.0",
-    "@fontsource/mulish": "^5.3.0"
+    "@fontsource-variable/open-sans": "^5.3.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@eslint-react/eslint-plugin": "^5.28.8",
     "@eslint/js": "^10.0.1",
+    "@fontsource/mulish": "^5.3.0",
     "@mui/icons-material": "^9.5.0",
     "@seminar/cli": "file:../seminar/packages/cli",
     "@seminar/core": "file:../seminar/packages/core",
