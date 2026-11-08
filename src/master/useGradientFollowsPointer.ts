@@ -1,3 +1,4 @@
+import { useSlideView } from '@seminar/core';
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useRef, useState } from 'react';
 
@@ -49,23 +50,29 @@ export interface GradientFollower {
  * The caller reports the pointer with the returned (stable) callbacks, and
  * `apply` draws the gradient with its center at the given point. Points may be
  * in any coordinate system, as long as it is the same everywhere.
+ *
+ * Only the view the presenter interacts with follows the pointer, and not,
+ * e.g., the thumbnails of the overview.
  */
 export function useGradientFollowsPointer(
   rest: Point,
   apply: (center: Point) => void,
 ): GradientFollower {
   const theme = useTheme();
+  const { interactive } = useSlideView();
   // The callbacks below are stable, so they read the latest arguments here.
   const optionsRef = useRef({
     rest,
     apply,
     duration: theme.transitions.duration.complex,
+    interactive,
   });
   useEffect(() => {
     optionsRef.current = {
       rest,
       apply,
       duration: theme.transitions.duration.complex,
+      interactive,
     };
   });
   const centerRef = useRef<Point>(rest);
@@ -111,16 +118,26 @@ export function useGradientFollowsPointer(
 
     return {
       enter(point) {
+        if (!optionsRef.current.interactive) {
+          return;
+        }
         pointerRef.current = point;
         glide();
       },
       move(point) {
+        if (pointerRef.current === undefined) {
+          // The pointer hasn't entered (or the view isn't interactive).
+          return;
+        }
         pointerRef.current = point;
         if (frameRef.current === undefined) {
           setCenter(point);
         }
       },
       leave() {
+        if (pointerRef.current === undefined) {
+          return;
+        }
         pointerRef.current = undefined;
         glide();
       },

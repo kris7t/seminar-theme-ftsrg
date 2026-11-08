@@ -1,4 +1,5 @@
 import { useId, type SVGProps } from 'react';
+import { useSlideView } from '@seminar/core';
 import { styled } from '@mui/material/styles';
 
 import { SLANT_GAP, SLANT_TAN } from '../design';
@@ -138,17 +139,22 @@ const FTSRG_URL = 'https://ftsrg.mit.bme.hu';
 const FtsrgCornerLogoBadge = styled('a', {
   name: 'FtsrgCornerLogo',
   slot: 'Badge',
-})({
+  shouldForwardProp: (prop) => prop !== 'interactive',
+})<{ interactive: boolean }>(({ interactive }) => ({
   outline: 'none',
-  '&:hover linearGradient, &:focus-visible linearGradient': {
-    transform: `translateX(${String(-HOVER_SHIFT_X)}px)`,
-  },
+  // Only the view the presenter interacts with reacts to the pointer, and not,
+  // e.g., the thumbnails of the overview.
+  ...(interactive && {
+    '&:hover linearGradient, &:focus-visible linearGradient': {
+      transform: `translateX(${String(-HOVER_SHIFT_X)}px)`,
+    },
+  }),
   // The default outline would follow the bounding box of the shifting
   // gradient, so we draw a ring along the badge outline instead.
   '&:focus-visible > polygon': {
     visibility: 'visible',
   },
-});
+}));
 
 const FtsrgCornerLogoFocusRing = styled('polygon', {
   name: 'FtsrgCornerLogo',
@@ -193,6 +199,7 @@ export function FtsrgCornerLogo({
 }: FtsrgCornerLogoProps) {
   // Every slide renders its own copy, so the ids must be unique.
   const gradientId = useId();
+  const { interactive } = useSlideView();
   return (
     <FtsrgCornerLogoRoot
       className={className}
@@ -208,6 +215,7 @@ export function FtsrgCornerLogo({
         ].join(' ')}
       />
       <FtsrgCornerLogoBadge
+        interactive={interactive}
         href={FTSRG_URL}
         target="_blank"
         rel="noopener noreferrer"
