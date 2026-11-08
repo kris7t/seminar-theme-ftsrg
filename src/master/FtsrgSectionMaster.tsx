@@ -6,7 +6,14 @@ import {
 } from '@seminar/core';
 import { styled, useTheme } from '@mui/material/styles';
 import { useThemeProps } from '@mui/material';
-import { Children, isValidElement, useId, type ReactNode } from 'react';
+import {
+  Children,
+  isValidElement,
+  useEffect,
+  useId,
+  useRef,
+  type ReactNode,
+} from 'react';
 
 import { SLANT_GAP, SLANT_TAN } from '../design';
 import { FtsrgSlideMaster } from './FtsrgSlideMaster';
@@ -16,6 +23,10 @@ import {
   TITLE_BACKGROUND_TOP,
   TITLE_GRADIENT,
 } from './FtsrgTitleMaster';
+import {
+  type Point,
+  useGradientFollowsPointer,
+} from './useGradientFollowsPointer';
 
 // The block on the left is vertically centered on the slide. At its mid-height,
 // the gap between the block and the outline on the right is centered on the
@@ -184,34 +195,111 @@ function SectionBackground({ filled }: VariantProps) {
   );
 }
 
+/** Whether the point (in slide coordinates) is inside the block. */
+function isInBlock({ x, y }: Point) {
+  return (
+    y >= BLOCK_TOP && y <= BLOCK_BOTTOM && x >= 0 && x <= slantX(BLOCK_MID_X, y)
+  );
+}
+
+// The resting center of the gradient of the title slide, in slide coordinates.
+const GRADIENT_REST: Point = {
+  x: SLIDE_WIDTH * TITLE_GRADIENT.x,
+  y: TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT * TITLE_GRADIENT.y,
+};
+
+/**
+ * The radius of the gradient of the title slide centered at `center`, which
+ * reaches the farthest corner of the background block of the title slide.
+ */
+function gradientRadius({ x, y }: Point) {
+  return Math.hypot(
+    Math.max(x, SLIDE_WIDTH - x),
+    Math.max(
+      y - TITLE_BACKGROUND_TOP,
+      TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT - y,
+    ),
+  );
+}
+
 /** The block filled with the background of the title slide. */
 function FilledBlock() {
   // Every slide renders its own copy, so the ids must be unique.
   const clipId = useId();
   const gradientId = useId();
+  const groupRef = useRef<SVGGElement>(null);
+  const gradientRef = useRef<SVGRadialGradientElement>(null);
+  // Like on the title slide, the center of the gradient follows the pointer
+  // while it is over the block. We update the gradient directly (instead of
+  // re-rendering) to keep pointer moves cheap.
+  const follower = useGradientFollowsPointer(GRADIENT_REST, (center) => {
+    const gradient = gradientRef.current;
+    gradient?.setAttribute('cx', String(center.x));
+    gradient?.setAttribute('cy', String(center.y));
+    gradient?.setAttribute('r', String(gradientRadius(center)));
+  });
+
+  useEffect(() => {
+    const svg = groupRef.current?.ownerSVGElement;
+    // The background ignores the pointer, and the content of the slide covers
+    // the block anyway, so we track the pointer over the whole content area.
+    const area = svg?.parentElement;
+    if (!svg || !area) {
+      return undefined;
+    }
+    let inside = false;
+    const handlePointerMove = (event: PointerEvent) => {
+      // Maps the pointer to slide coordinates, accounting for the scaling of
+      // the slide.
+      const matrix = svg.getScreenCTM()?.inverse();
+      if (!matrix) {
+        return;
+      }
+      const { x, y } = new DOMPoint(
+        event.clientX,
+        event.clientY,
+      ).matrixTransform(matrix);
+      const point = { x, y };
+      if (!isInBlock(point)) {
+        if (inside) {
+          inside = false;
+          follower.leave();
+        }
+      } else if (inside) {
+        follower.move(point);
+      } else {
+        inside = true;
+        follower.enter(point);
+      }
+    };
+    const handlePointerLeave = () => {
+      if (inside) {
+        inside = false;
+        follower.leave();
+      }
+    };
+    area.addEventListener('pointermove', handlePointerMove);
+    area.addEventListener('pointerleave', handlePointerLeave);
+    return () => {
+      area.removeEventListener('pointermove', handlePointerMove);
+      area.removeEventListener('pointerleave', handlePointerLeave);
+    };
+  }, [follower]);
+
   // We draw the background of the title slide in exactly the same place (a
   // `contain`ed image over a radial gradient reaching the farthest corner), and
   // clip it to the block. Unlike a <pattern>, this draws the image at the
   // resolution of the screen, like the CSS background of the title slide.
-  const gradientX = SLIDE_WIDTH * TITLE_GRADIENT.x;
-  const gradientY =
-    TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT * TITLE_GRADIENT.y;
-  const gradientRadius = Math.hypot(
-    Math.max(gradientX, SLIDE_WIDTH - gradientX),
-    Math.max(
-      gradientY - TITLE_BACKGROUND_TOP,
-      TITLE_BACKGROUND_TOP + TITLE_BACKGROUND_HEIGHT - gradientY,
-    ),
-  );
   return (
     <>
       <defs>
         <radialGradient
+          ref={gradientRef}
           id={gradientId}
           gradientUnits="userSpaceOnUse"
-          cx={gradientX}
-          cy={gradientY}
-          r={gradientRadius}
+          cx={GRADIENT_REST.x}
+          cy={GRADIENT_REST.y}
+          r={gradientRadius(GRADIENT_REST)}
         >
           <stop offset="0" stopColor={TITLE_GRADIENT.inner} />
           <stop offset="1" stopColor={TITLE_GRADIENT.outer} />
@@ -220,7 +308,7 @@ function FilledBlock() {
           <polygon points={BLOCK_POINTS} />
         </clipPath>
       </defs>
-      <g clipPath={`url(#${clipId})`}>
+      <g ref={groupRef} clipPath={`url(#${clipId})`}>
         <rect
           y={TITLE_BACKGROUND_TOP}
           width={SLIDE_WIDTH}

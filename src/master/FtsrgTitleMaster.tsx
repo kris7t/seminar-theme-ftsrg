@@ -1,9 +1,14 @@
 import { type TitleMasterProps, useDeck, useSlideView } from '@seminar/core';
 import { styled } from '@mui/material/styles';
 import { useThemeProps } from '@mui/material';
+import { type PointerEvent, useRef } from 'react';
 
 import titleBackground from '../../assets/title-background.avif';
 import titleBackgroundTop from '../../assets/title-background-top.avif';
+import {
+  type Point,
+  useGradientFollowsPointer,
+} from './useGradientFollowsPointer';
 
 // Position of the dark background block of the title slide. Other masters
 // reuse it to show parts of the same background in exactly the same place.
@@ -18,6 +23,12 @@ export const TITLE_GRADIENT = {
   inner: '#1a191a',
   outer: '#2d2f2e',
 };
+
+// While the pointer is over the body, the center of its gradient follows the
+// pointer. We set these custom properties directly on the element (instead of
+// re-rendering) to keep pointer moves cheap.
+const GRADIENT_X_VAR = '--FtsrgTitleMaster-gradientX';
+const GRADIENT_Y_VAR = '--FtsrgTitleMaster-gradientY';
 
 const FtsrgTitleMasterRoot = styled('section', {
   name: 'FtsrgTitleMaster',
@@ -55,7 +66,7 @@ const FtsrgTitleMasterBody = styled('main', {
   width: '100%',
   height: TITLE_BACKGROUND_HEIGHT,
   color: theme.palette.primary.contrastText,
-  backgroundImage: `url(${titleBackground}), radial-gradient(circle at ${String(TITLE_GRADIENT.x * 100)}% ${String(TITLE_GRADIENT.y * 100)}%, ${TITLE_GRADIENT.inner} 0%, ${TITLE_GRADIENT.outer} 100%)`,
+  backgroundImage: `url(${titleBackground}), radial-gradient(circle at var(${GRADIENT_X_VAR}, ${String(TITLE_GRADIENT.x * 100)}%) var(${GRADIENT_Y_VAR}, ${String(TITLE_GRADIENT.y * 100)}%), ${TITLE_GRADIENT.inner} 0%, ${TITLE_GRADIENT.outer} 100%)`,
   backgroundSize: 'contain',
   gap: theme.spacing(3),
   padding: theme.spacing(0, 16),
@@ -82,16 +93,45 @@ const FtsrgTitleMasterSubtitle = styled('div', {
   },
 }));
 
+function getPointerPosition(event: PointerEvent<HTMLElement>): Point {
+  // The bounding rectangle accounts for the scaling of the slide.
+  const rect = event.currentTarget.getBoundingClientRect();
+  return {
+    x: (event.clientX - rect.left) / rect.width,
+    y: (event.clientY - rect.top) / rect.height,
+  };
+}
+
 export function FtsrgTitleMaster(inProps: TitleMasterProps) {
   const { title, children } = useThemeProps({
     props: inProps,
     name: 'FtsrgTitleMaster',
   });
-  const { metadata: { event }, lang } = useDeck();
+  const {
+    metadata: { event },
+    lang,
+  } = useDeck();
   const { lang: slideLang } = useSlideView();
+  const bodyRef = useRef<HTMLElement>(null);
+  // Coordinates are relative to the body, like in TITLE_GRADIENT.
+  const follower = useGradientFollowsPointer(TITLE_GRADIENT, ({ x, y }) => {
+    bodyRef.current?.style.setProperty(GRADIENT_X_VAR, `${String(x * 100)}%`);
+    bodyRef.current?.style.setProperty(GRADIENT_Y_VAR, `${String(y * 100)}%`);
+  });
   return (
     <FtsrgTitleMasterRoot>
-      <FtsrgTitleMasterBody>
+      <FtsrgTitleMasterBody
+        ref={bodyRef}
+        onPointerEnter={(event) => {
+          follower.enter(getPointerPosition(event));
+        }}
+        onPointerMove={(event) => {
+          follower.move(getPointerPosition(event));
+        }}
+        onPointerLeave={() => {
+          follower.leave();
+        }}
+      >
         {title !== undefined && (
           <FtsrgTitleMasterTitle>{title}</FtsrgTitleMasterTitle>
         )}
