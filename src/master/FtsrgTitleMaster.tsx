@@ -9,6 +9,7 @@ import {
   type Point,
   useGradientFollowsPointer,
 } from './useGradientFollowsPointer';
+import { Logos } from '@/logos/Logos';
 
 // Position of the dark background block of the title slide. Other masters
 // reuse it to show parts of the same background in exactly the same place.
@@ -93,6 +94,16 @@ const FtsrgTitleMasterSubtitle = styled('div', {
   },
 }));
 
+const FtsrgTitleMasterFooter = styled('aside', {
+  name: 'FtsrgTitleMaster',
+  slot: 'Footer',
+})({
+  display: 'flex',
+  flexGrow: 1,
+  flexDirection: 'row',
+  justifyContent: 'center',
+});
+
 function getPointerPosition(event: PointerEvent<HTMLElement>): Point {
   // The bounding rectangle accounts for the scaling of the slide.
   const rect = event.currentTarget.getBoundingClientRect();
@@ -139,11 +150,14 @@ export function FtsrgTitleMaster(inProps: TitleMasterProps) {
           <FtsrgTitleMasterSubtitle>{children}</FtsrgTitleMasterSubtitle>
         )}
       </FtsrgTitleMasterBody>
-      {event && (
-        <FtsrgTitleMasterRunningTitle {...(lang === slideLang ? {} : { lang })}>
-          {event}
-        </FtsrgTitleMasterRunningTitle>
-      )}
+      <FtsrgTitleMasterFooter>
+        {event && (
+          <FtsrgTitleMasterRunningTitle {...(lang === slideLang ? {} : { lang })}>
+            {event}
+          </FtsrgTitleMasterRunningTitle>
+        )}
+        <Logos lang={slideLang} />
+      </FtsrgTitleMasterFooter>
     </FtsrgTitleMasterRoot>
   );
 }

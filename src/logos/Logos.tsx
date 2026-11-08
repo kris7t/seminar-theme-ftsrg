@@ -1,0 +1,191 @@
+import { generateUtilityClasses } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+import bmeLogo from '../../assets/bme-logo.avif';
+import vikLogo from '../../assets/vik-logo.avif';
+import vikLabelEn from '../../assets/vik-label-en.avif';
+import vikLabelHu from '../../assets/vik-label-hu.avif';
+import mitLogo from '../../assets/mit-logo.avif';
+import mitLabelEn from '../../assets/mit-label-en.avif';
+import mitLabelHu from '../../assets/mit-label-hu.avif';
+import ftsrgLogo from '../../assets/ftsrg-logo.avif';
+import ftsrgLabelEn from '../../assets/ftsrg-label-en.avif';
+import ftsrgLabelHu from '../../assets/ftsrg-label-hu.avif';
+
+const logosClasses = generateUtilityClasses('FtsrgLogos', [
+  'root',
+  'separator',
+  'link',
+  'image',
+]);
+
+const LogosRoot = styled('div', {
+  name: 'FtsrgLogos',
+  slot: 'Root',
+})(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  '&:has(.FtsrgLogos-link:is(:hover, :focus-within)) > *:not(.FtsrgLogos-link:is(:hover, :focus-within))':
+    {
+      filter: 'brightness(0%) opacity(0.34)',
+    },
+  '& > *': {
+    '@media (prefers-reduced-motion: no-preference)': {
+      transition: theme.transitions.create('filter', {
+        duration: theme.transitions.duration.standard,
+        easing: theme.transitions.easing.easeInOut,
+      }),
+    },
+  },
+}));
+
+const LogosSeparator = styled('div', {
+  name: 'FtsrgLogos',
+  slot: 'Separator',
+  shouldForwardProp: (prop) => prop !== 'color',
+})<{ color: string; }>(({ color }) => ({
+  height: '46px',
+  width: '1px',
+  backgroundColor: color,
+  marginInline: '12px',
+}));
+
+const LogosLink = styled('a', {
+  name: 'FtsrgLogos',
+  slot: 'Link',
+})({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+const LOGO_HEIGHT = 64;
+
+export function Logos({
+  lang = 'en',
+  compact = false,
+}: {
+  lang?: string | undefined;
+  compact?: boolean | undefined;
+}) {
+  const labels =
+    lang === 'hu'
+      ? {
+          lang: 'hu',
+          bme: 'Budapesti Műszaki és Gazdaságtudományi Egyetem',
+          vik: 'Villamosmérnöki és Informatikai Kar',
+          mit: 'Mesterséges Intelligencia és Rendszertervezés Tanszék',
+          ftsrg: 'Kritikus Rendszerek Kutatócsoport',
+        }
+      : {
+          lang: 'en',
+          bme: 'Budapest University of Technology and Economics',
+          vik: 'Faculty of Electrical Engineering and Informatics',
+          mit: 'Department of Artificial Intelligence and Systems Engineering',
+          ftsrg: 'Critical Systems Research Group',
+        };
+  const labelImages =
+    lang === 'hu'
+      ? {
+          vik: vikLabelHu,
+          mit: mitLabelHu,
+          ftsrg: ftsrgLabelHu,
+        }
+      : {
+          vik: vikLabelEn,
+          mit: mitLabelEn,
+          ftsrg: ftsrgLabelEn,
+        };
+
+  return (
+    <LogosRoot
+      className={logosClasses.root}
+      {...(lang === labels.lang ? {} : { lang: labels.lang })}
+    >
+      <LogosLink
+        href="https://www.bme.hu"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={labels.bme}
+        className={logosClasses.link}
+      >
+        <img
+          src={bmeLogo}
+          height={LOGO_HEIGHT}
+          alt=""
+          className={logosClasses.image}
+        />
+      </LogosLink>
+      <LogosSeparator color="#000" className={logosClasses.separator} />
+      <LogosLink
+        href="https://vik.bme.hu"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={labels.vik}
+        className={logosClasses.link}
+      >
+        <img
+          src={vikLogo}
+          height={LOGO_HEIGHT}
+          alt=""
+          className={logosClasses.image}
+        />
+        {!compact && (
+          <img
+            src={labelImages.vik}
+            height={LOGO_HEIGHT}
+            alt=""
+            className={logosClasses.image}
+          />
+        )}
+      </LogosLink>
+      <LogosSeparator color="#211661" className={logosClasses.separator} />
+      <LogosLink
+        href="https://mit.bme.hu"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={labels.mit}
+        className={logosClasses.link}
+      >
+        <img
+          src={mitLogo}
+          height={LOGO_HEIGHT}
+          alt=""
+          className={logosClasses.image}
+        />
+        {!compact && (
+          <img
+            src={labelImages.mit}
+            height={LOGO_HEIGHT}
+            className={logosClasses.image}
+          />
+        )}
+      </LogosLink>
+      <LogosSeparator color="#810f29" className={logosClasses.separator} />
+      <LogosLink
+        href="https://ftsrg.mit.bme.hu"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={labels.ftsrg}
+        className={logosClasses.link}
+      >
+        <img
+          src={ftsrgLogo}
+          height={LOGO_HEIGHT}
+          alt=""
+          className={logosClasses.image}
+        />
+        {!compact && (
+          <img
+            src={labelImages.ftsrg}
+            height={LOGO_HEIGHT}
+            className={logosClasses.image}
+          />
+        )}
+      </LogosLink>
+    </LogosRoot>
+  );
+}
