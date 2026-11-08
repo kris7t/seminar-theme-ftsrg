@@ -11,7 +11,14 @@ import {
   FtsrgSectionMaster,
   FtsrgSubsectionMaster,
 } from './master/FtsrgSectionMaster';
+import { FtsrgStatementMaster } from './master/FtsrgStatementMaster';
 import { FtsrgTitleMaster } from './master/FtsrgTitleMaster';
+
+declare module '@seminar/core' {
+  interface SlideMasterOverrides {
+    statement: true;
+  }
+}
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -98,6 +105,7 @@ export default createSlideTheme({
     content: FtsrgContentMaster,
     section: FtsrgSectionMaster,
     subsection: FtsrgSubsectionMaster,
+    statement: FtsrgStatementMaster,
   },
   slideTransition: { duration: 0 },
   stepTransition: { duration: 0 },

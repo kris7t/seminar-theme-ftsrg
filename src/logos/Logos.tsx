@@ -2,6 +2,7 @@ import { generateUtilityClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { FtsrgColorLogo } from './FtsrgLogo';
+import { FtsrgName } from './FtsrgName';
 
 import bmeLogo from '../../assets/bme-logo.avif';
 import vikLogo from '../../assets/vik-logo.avif';
@@ -65,19 +66,13 @@ const LogosLink = styled('a', {
 
 // Text label next to the ftsrg logo, matching the size and position of the
 // text in the raster labels.
-const LogosLabel = styled('span', {
+const LogosLabel = styled(FtsrgName, {
   name: 'FtsrgLogos',
   slot: 'Label',
 })({
-  display: 'block',
   marginInlineStart: 16,
-  fontFamily: 'Mulish, sans-serif',
   fontSize: 22.75,
-  fontStyle: 'italic',
-  fontWeight: 800,
   lineHeight: '28px',
-  letterSpacing: 0,
-  whiteSpace: 'nowrap',
   color: '#000',
 });
 
@@ -101,7 +96,6 @@ export function Logos({
           vik: 'Villamosmérnöki és Informatikai Kar',
           mit: 'Mesterséges Intelligencia és Rendszertervezés Tanszék',
           ftsrg: 'Kritikus Rendszerek Kutatócsoport',
-          ftsrgLines: ['Kritikus Rendszerek', 'Kutatócsoport'],
         }
       : {
           lang: 'en',
@@ -109,7 +103,6 @@ export function Logos({
           vik: 'Faculty of Electrical Engineering and Informatics',
           mit: 'Department of Artificial Intelligence and Systems Engineering',
           ftsrg: 'Critical Systems Research Group',
-          ftsrgLines: ['Critical Systems', 'Research Group'],
         };
   const labelImages =
     lang === 'hu'
@@ -202,11 +195,11 @@ export function Logos({
           className={logosClasses.image}
         />
         {!compact && (
-          <LogosLabel aria-hidden="true" className={logosClasses.label}>
-            {labels.ftsrgLines[0]}
-            <br />
-            {labels.ftsrgLines[1]}
-          </LogosLabel>
+          <LogosLabel
+            lang={labels.lang}
+            aria-hidden="true"
+            className={logosClasses.label}
+          />
         )}
       </LogosLink>
     </LogosRoot>
