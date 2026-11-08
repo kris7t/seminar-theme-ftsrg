@@ -33,6 +33,8 @@ const FtsrgSlideMasterFooter = styled('footer', {
   position: 'relative',
   display: 'flex',
   height: theme.spacing(5.75),
+  fontSize: 16,
+  color: '#2f2d2e',
 }));
 
 const FtsrgSlideMasterFooterBackground = styled('div', {
@@ -48,10 +50,9 @@ const FtsrgSlideMasterRunningTitle = styled('div', {
   slot: 'RunningTitle',
 })(({ theme }) => ({
   position: 'absolute',
-  left: theme.spacing(1.5),
+  left: theme.spacing(1.25),
   top: '50%',
   transform: 'translate(0, -50%)',
-  fontSize: 16,
 }));
 
 const FtsrgSlideMasterSlideNumber = styled('div', {
@@ -62,7 +63,6 @@ const FtsrgSlideMasterSlideNumber = styled('div', {
   left: '50%',
   top: '50%',
   transform: 'translate(-50%, -50%)',
-  fontSize: 16,
 });
 
 const FtsrgSlideMasterLogo = styled(FtsrgCornerLogo, {

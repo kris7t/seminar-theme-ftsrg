@@ -13,8 +13,8 @@ export const TITLE_BACKGROUND_IMAGE = titleBackground;
 // Radial gradient under the image, centered at (x, y) relative to the block,
 // fading from INNER to OUTER at the farthest corner.
 export const TITLE_GRADIENT = {
-  x: 0.4,
-  y: 0.5,
+  x: 0.5,
+  y: 0.75,
   inner: '#1a191a',
   outer: '#2d2f2e',
 };

@@ -22,7 +22,7 @@ import {
 // slide, and as wide (horizontally) as the gap between other slanted elements.
 // Section slides fill the block with the background of the title slide, while
 // subsection slides draw an outline around it, like the one on the right.
-const BLOCK_HEIGHT = 320;
+const BLOCK_HEIGHT = 312;
 const BLOCK_TOP = (SLIDE_HEIGHT - BLOCK_HEIGHT) / 2;
 const BLOCK_BOTTOM = BLOCK_TOP + BLOCK_HEIGHT;
 const BLOCK_MID_X = SLIDE_WIDTH / 2 - SLANT_GAP / 2;
