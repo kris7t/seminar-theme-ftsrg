@@ -10,14 +10,13 @@ import vikLabelHu from '../../assets/vik-label-hu.avif';
 import mitLogo from '../../assets/mit-logo.avif';
 import mitLabelEn from '../../assets/mit-label-en.avif';
 import mitLabelHu from '../../assets/mit-label-hu.avif';
-import ftsrgLabelEn from '../../assets/ftsrg-label-en.avif';
-import ftsrgLabelHu from '../../assets/ftsrg-label-hu.avif';
 
 const logosClasses = generateUtilityClasses('FtsrgLogos', [
   'root',
   'separator',
   'link',
   'image',
+  'label',
 ]);
 
 const LogosRoot = styled('div', {
@@ -58,9 +57,28 @@ const LogosLink = styled('a', {
   slot: 'Link',
 })({
   display: 'flex',
+  textDecoration: 'none',
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
+});
+
+// Text label next to the ftsrg logo, matching the size and position of the
+// text in the raster labels.
+const LogosLabel = styled('span', {
+  name: 'FtsrgLogos',
+  slot: 'Label',
+})({
+  display: 'block',
+  marginInlineStart: 16,
+  fontFamily: 'Mulish, sans-serif',
+  fontSize: 22.75,
+  fontStyle: 'italic',
+  fontWeight: 800,
+  lineHeight: '28px',
+  letterSpacing: 0,
+  whiteSpace: 'nowrap',
+  color: '#000',
 });
 
 const LOGO_HEIGHT = 64;
@@ -83,6 +101,7 @@ export function Logos({
           vik: 'Villamosmérnöki és Informatikai Kar',
           mit: 'Mesterséges Intelligencia és Rendszertervezés Tanszék',
           ftsrg: 'Kritikus Rendszerek Kutatócsoport',
+          ftsrgLines: ['Kritikus Rendszerek', 'Kutatócsoport'],
         }
       : {
           lang: 'en',
@@ -90,18 +109,17 @@ export function Logos({
           vik: 'Faculty of Electrical Engineering and Informatics',
           mit: 'Department of Artificial Intelligence and Systems Engineering',
           ftsrg: 'Critical Systems Research Group',
+          ftsrgLines: ['Critical Systems', 'Research Group'],
         };
   const labelImages =
     lang === 'hu'
       ? {
           vik: vikLabelHu,
           mit: mitLabelHu,
-          ftsrg: ftsrgLabelHu,
         }
       : {
           vik: vikLabelEn,
           mit: mitLabelEn,
-          ftsrg: ftsrgLabelEn,
         };
 
   return (
@@ -184,11 +202,11 @@ export function Logos({
           className={logosClasses.image}
         />
         {!compact && (
-          <img
-            src={labelImages.ftsrg}
-            height={LOGO_HEIGHT}
-            className={logosClasses.image}
-          />
+          <LogosLabel aria-hidden="true" className={logosClasses.label}>
+            {labels.ftsrgLines[0]}
+            <br />
+            {labels.ftsrgLines[1]}
+          </LogosLabel>
         )}
       </LogosLink>
     </LogosRoot>
