@@ -1,8 +1,0 @@
-/* Only has the characters of the name of the group (see scripts/subset-mulish.py). */
-@font-face {
-  font-family: 'Mulish';
-  font-style: italic;
-  font-display: swap;
-  font-weight: 800;
-  src: url(../assets/mulish-800-italic-subset.woff2) format(woff2);
-}

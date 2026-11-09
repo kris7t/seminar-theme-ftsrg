@@ -1,0 +1,12 @@
+/*
+ * Subset of Mulish ExtraBold Italic with only the characters of the name of the
+ * group (see scripts/subset-mulish.py). It has its own family name so that it
+ * does not shadow the full Mulish font if a deck loads it.
+ */
+@font-face {
+  font-family: 'FTSRG Name';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 800;
+  src: url(./mulish-800-italic-subset.woff2) format(woff2);
+}

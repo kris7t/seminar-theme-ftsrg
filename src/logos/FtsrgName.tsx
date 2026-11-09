@@ -1,6 +1,8 @@
 import type { ComponentProps } from 'react';
 import { styled } from '@mui/material/styles';
 
+import '../../assets/mulish-800-italic-subset.css';
+
 // The name of the research group as it is set next to the logo, on two lines.
 const NAME_LINES = {
   en: ['Critical Systems', 'Research Group'],
@@ -18,7 +20,7 @@ const FtsrgNameRoot = styled('span', {
   slot: 'Root',
 })({
   display: 'block',
-  fontFamily: 'Mulish, sans-serif',
+  fontFamily: "'FTSRG Name', Mulish, sans-serif",
   fontStyle: 'italic',
   fontWeight: 800,
   letterSpacing: 0,

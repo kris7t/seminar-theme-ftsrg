@@ -9,7 +9,7 @@ import {
   type Point,
   useGradientFollowsPointer,
 } from './useGradientFollowsPointer';
-import { Logos } from '@/logos/Logos';
+import { Logos } from '../logos/Logos';
 
 // Position of the dark background block of the title slide. Other masters
 // reuse it to show parts of the same background in exactly the same place.

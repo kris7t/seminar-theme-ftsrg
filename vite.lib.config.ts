@@ -6,12 +6,13 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
 
 const OUT_DIR = path.resolve('lib');
-const ASSET = /\.(avif|png|jpe?g|webp|svg)$/;
+const ASSET = /\.(avif|png|jpe?g|webp|svg|css)$/;
 
 /**
- * Keeps imports of images, pointing to the images in `assets/`, so that the
- * Vite build of the deck processes them like its own images (e.g., inlines
- * them into self-contained presentations).
+ * Keeps imports of images and style sheets, pointing to the files in
+ * `assets/`, so that the Vite build of the deck processes them like its own
+ * (e.g., inlines them and the fonts of the style sheets into self-contained
+ * presentations).
  */
 const externalAssets: Plugin = {
   name: 'external-assets',
