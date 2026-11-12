@@ -1,0 +1,12 @@
+/*
+ * The letters of the labels of the department logos, with the stroke of the
+ * logos merged into their outlines (see scripts/build-mit-label-font.py). The
+ * labels are rendered as text so that they look crisp at small sizes.
+ */
+@font-face {
+  font-family: 'MIT Label';
+  font-style: normal;
+  font-display: block;
+  font-weight: 400;
+  src: url(./mit-label.woff2) format(woff2);
+}

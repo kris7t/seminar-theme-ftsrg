@@ -1,4 +1,5 @@
 import type { SVGProps } from 'react';
+import '../../assets/mit-label.css';
 export declare const MIT_LOGO_COLOR = "#810f29";
 export declare const MIT_LOGO_DOT_COLOR = "#000";
 export declare const MIT_LOGO_VIEW_BOX_WIDTH = 56.758;
