@@ -19,15 +19,17 @@ from pathlib import Path
 
 from fontTools import subset
 from fontTools.ttLib import TTFont
+from fontTools.varLib import instancer
 
 ROOT = Path(__file__).resolve().parent.parent
 FONTSOURCE = ROOT / "node_modules" / "@fontsource"
+FONTSOURCE_VARIABLE = ROOT / "node_modules" / "@fontsource-variable"
 ASSETS = ROOT / "assets"
 
 
 @dataclass
 class Subset:
-    # Name of the fontsource package.
+    # Name of the fontsource package (in `@fontsource-variable` if `axes` is set).
     package: str
     # Fontsource splits fonts by script. We take the first one that has every
     # character of the name.
@@ -37,6 +39,8 @@ class Subset:
     output: str
     # The Open Font License requires the license to accompany the font.
     license_output: str
+    # Coordinates to instantiate a variable font at, as a static font.
+    axes: dict[str, float] | None = None
 
 
 SUBSETS = [
@@ -50,12 +54,15 @@ SUBSETS = [
     Subset(
         package="montserrat",
         sources=[
-            "montserrat-latin-400-normal.woff2",
-            "montserrat-latin-ext-400-normal.woff2",
+            "montserrat-latin-wght-normal.woff2",
+            "montserrat-latin-ext-wght-normal.woff2",
         ],
         component="src/logos/VikName.tsx",
-        output="montserrat-400-subset.woff2",
+        output="montserrat-425-subset.woff2",
         license_output="montserrat-OFL.txt",
+        # Montserrat has become lighter since the logos of the faculty were
+        # made, so we make it a bit heavier than Regular to match them.
+        axes={"wght": 425},
     ),
 ]
 
@@ -84,7 +91,7 @@ def find_source(sources: list[Path], characters: set[str]) -> Path:
 
 
 def make_subset(spec: Subset) -> None:
-    package = FONTSOURCE / spec.package
+    package = (FONTSOURCE_VARIABLE if spec.axes else FONTSOURCE) / spec.package
     characters = name_characters(ROOT / spec.component)
     source = find_source([package / "files" / s for s in spec.sources], characters)
     options = subset.Options()
@@ -95,6 +102,8 @@ def make_subset(spec: Subset) -> None:
     # pixel sizes would only take up space.
     options.hinting = False
     font = subset.load_font(str(source), options)
+    if spec.axes is not None:
+        font = instancer.instantiateVariableFont(font, spec.axes)
     subsetter = subset.Subsetter(options)
     subsetter.populate(text="".join(sorted(characters)))
     subsetter.subset(font)

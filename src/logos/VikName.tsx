@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import { styled } from '@mui/material/styles';
 
-import '../../assets/montserrat-400-subset.css';
+import '../../assets/montserrat-425-subset.css';
 
 // The name of the faculty as it is set next to the roundel, on three lines.
 const NAME_LINES = {
@@ -24,7 +24,7 @@ const VikNameRoot = styled('span', {
   display: 'block',
   fontFamily: "'VIK Name', Montserrat, sans-serif",
   fontStyle: 'normal',
-  fontWeight: 400,
+  fontWeight: 425,
   letterSpacing: '0.083em',
   whiteSpace: 'nowrap',
 });
@@ -35,7 +35,7 @@ export interface VikNameProps extends Omit<ComponentProps<'span'>, 'lang'> {
 }
 
 /**
- * The name of the faculty in Montserrat Regular, as in the logos of the
+ * The name of the faculty in Montserrat (slightly heavier than Regular), as in the logos of the
  * faculty, on three lines.
  */
 export function VikName({ lang, ...props }: VikNameProps) {
