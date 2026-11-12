@@ -185,11 +185,12 @@ export default createSlideTheme({
             '--FtsrgColumn-accent': neutral
               ? theme.palette.neutral.dark
               : 'var(--SeminarColumn-palette-main)',
-            '& > :not(.SeminarColumn-heading) strong': {
-              color: neutral
-                ? theme.palette.text.primary
-                : 'var(--FtsrgColumn-accent)',
-            },
+            '& > .SeminarColumn-content > :not(.SeminarColumn-heading) strong':
+              {
+                color: neutral
+                  ? theme.palette.text.primary
+                  : 'var(--FtsrgColumn-accent)',
+              },
           };
           const band = {
             '--SeminarColumn-heading-color': neutral
@@ -227,12 +228,14 @@ export default createSlideTheme({
                 '&:not(:not(style) ~ *)': {
                   '--FtsrgColumn-start': 'var(--FtsrgColumns-edge)',
                   '--FtsrgColumn-start-clip': '0px',
-                  '& > .SeminarColumn-heading::before': { left: '-100%' },
+                  '& > .SeminarColumn-content > .SeminarColumn-heading::before':
+                    { left: '-100%' },
                 },
                 '&:last-child': {
                   '--FtsrgColumn-end': 'var(--FtsrgColumns-edge)',
                   '--FtsrgColumn-end-clip': '0px',
-                  '& > .SeminarColumn-heading::before': { right: '-100%' },
+                  '& > .SeminarColumn-content > .SeminarColumn-heading::before':
+                    { right: '-100%' },
                 },
               };
           }
