@@ -3,14 +3,12 @@ import { styled } from '@mui/material/styles';
 
 import { FtsrgColorLogo, LOGO_COLOR } from './FtsrgLogo';
 import { FtsrgName } from './FtsrgName';
+import { MIT_LOGO_COLOR, MitLabelEn, MitLabelHu, MitLogo } from './MitLogo';
 
 import bmeLogo from '../../assets/bme-logo.avif';
 import vikLogo from '../../assets/vik-logo.avif';
 import vikLabelEn from '../../assets/vik-label-en.avif';
 import vikLabelHu from '../../assets/vik-label-hu.avif';
-import mitLogo from '../../assets/mit-logo.avif';
-import mitLabelEn from '../../assets/mit-label-en.avif';
-import mitLabelHu from '../../assets/mit-label-hu.avif';
 
 const logosClasses = generateUtilityClasses('FtsrgLogos', [
   'root',
@@ -77,9 +75,10 @@ const LogosLabel = styled(FtsrgName, {
 });
 
 const LOGO_HEIGHT = 64;
-// The vector ftsrg logo has no padding around the glyphs, so we add the same
-// amount of padding as in the raster logos (2.5px for a 170px tall image).
-const FTSRG_LOGO_INSET = LOGO_HEIGHT * (2.5 / 170);
+// The vector logos have no padding around them, so we add the same amount of
+// padding as in the raster logos (2.5px for a 170px tall image).
+const LOGO_INSET = LOGO_HEIGHT * (2.5 / 170);
+const VECTOR_LOGO_HEIGHT = LOGO_HEIGHT - 2 * LOGO_INSET;
 
 export function Logos({
   lang = 'en',
@@ -104,16 +103,8 @@ export function Logos({
           mit: 'Department of Artificial Intelligence and Systems Engineering',
           ftsrg: 'Critical Systems Research Group',
         };
-  const labelImages =
-    lang === 'hu'
-      ? {
-          vik: vikLabelHu,
-          mit: mitLabelHu,
-        }
-      : {
-          vik: vikLabelEn,
-          mit: mitLabelEn,
-        };
+  const vikLabel = lang === 'hu' ? vikLabelHu : vikLabelEn;
+  const MitLabel = lang === 'hu' ? MitLabelHu : MitLabelEn;
 
   return (
     <LogosRoot
@@ -150,7 +141,7 @@ export function Logos({
         />
         {!compact && (
           <img
-            src={labelImages.vik}
+            src={vikLabel}
             height={LOGO_HEIGHT}
             alt=""
             className={logosClasses.image}
@@ -165,21 +156,29 @@ export function Logos({
         aria-label={labels.mit}
         className={logosClasses.link}
       >
-        <img
-          src={mitLogo}
-          height={LOGO_HEIGHT}
-          alt=""
+        <MitLogo
+          height={VECTOR_LOGO_HEIGHT}
+          role="presentation"
+          aria-label={undefined}
+          // The label already has the spacing after the logo.
+          style={{
+            margin: LOGO_INSET,
+            marginInlineEnd: compact ? LOGO_INSET : 0,
+          }}
           className={logosClasses.image}
         />
         {!compact && (
-          <img
-            src={labelImages.mit}
-            height={LOGO_HEIGHT}
-            className={logosClasses.image}
+          <MitLabel
+            height={VECTOR_LOGO_HEIGHT}
+            style={{ marginBlock: LOGO_INSET, marginInlineEnd: LOGO_INSET }}
+            className={logosClasses.label}
           />
         )}
       </LogosLink>
-      <LogosSeparator color="#810f29" className={logosClasses.separator} />
+      <LogosSeparator
+        color={MIT_LOGO_COLOR}
+        className={logosClasses.separator}
+      />
       <LogosLink
         href="https://ftsrg.mit.bme.hu"
         target="_blank"
@@ -188,10 +187,10 @@ export function Logos({
         className={logosClasses.link}
       >
         <FtsrgColorLogo
-          height={LOGO_HEIGHT - 2 * FTSRG_LOGO_INSET}
+          height={VECTOR_LOGO_HEIGHT}
           role="presentation"
           aria-label={undefined}
-          style={{ margin: FTSRG_LOGO_INSET }}
+          style={{ margin: LOGO_INSET }}
           className={logosClasses.image}
         />
         {!compact && (

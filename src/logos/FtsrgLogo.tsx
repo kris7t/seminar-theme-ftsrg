@@ -26,7 +26,9 @@ const LOGO_DOT_PATHS = [
   'm 51.663,41.687 c -1.914,0 -3.47,-1.557 -3.47,-3.47 0,-1.913 1.556,-3.469 3.47,-3.469 1.913,0 3.469,1.556 3.469,3.469 0,1.914 -1.556,3.47 -3.469,3.47 z m 0,-10.203 c -3.713,0 -6.734,3.02 -6.734,6.732 0,3.713 3.021,6.733 6.734,6.733 3.713,0 6.733,-3.021 6.733,-6.733 0,-3.712 -3.02,-6.732 -6.733,-6.732',
 ];
 
-// Exact bounding box of the glyphs.
+// Exact bounding box of the glyphs. The logos let the anti-aliasing of the
+// edges overflow it, so that the edges don't look cut off if the box is not
+// aligned to device pixels.
 export const LOGO_VIEW_BOX_WIDTH = 84.051;
 export const LOGO_VIEW_BOX_HEIGHT = 44.95;
 export const LOGO_VIEW_BOX = `0 0 ${String(LOGO_VIEW_BOX_WIDTH)} ${String(LOGO_VIEW_BOX_HEIGHT)}`;
@@ -57,7 +59,13 @@ export function LogoGlyphs({
  */
 export function FtsrgLogo({ role = 'img', ...props }: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox={LOGO_VIEW_BOX} role={role} aria-label="ftsrg" {...props}>
+    <svg
+      viewBox={LOGO_VIEW_BOX}
+      overflow="visible"
+      role={role}
+      aria-label="ftsrg"
+      {...props}
+    >
       <LogoGlyphs />
     </svg>
   );
@@ -74,6 +82,7 @@ export function FtsrgColorLogo({
   return (
     <svg
       viewBox={LOGO_VIEW_BOX}
+      overflow="visible"
       role={role}
       aria-label="ftsrg"
       color={LOGO_COLOR}
