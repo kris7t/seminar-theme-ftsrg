@@ -1,9 +1,13 @@
 import '@fontsource-variable/open-sans/wght.css';
 import '@fontsource-variable/open-sans/wght-italic.css';
-import type { Theme } from '@mui/material/styles';
 declare module '@seminar/core' {
     interface SlideMasterOverrides {
         statement: true;
+    }
+}
+declare module '@seminar/elements' {
+    interface ColumnVariantOverrides {
+        slanted: true;
     }
 }
 declare module '@mui/material/styles' {
@@ -14,5 +18,5 @@ declare module '@mui/material/styles' {
         neutral?: PaletteOptions['primary'];
     }
 }
-declare const _default: Theme;
+declare const _default: import("@mui/material").Theme;
 export default _default;

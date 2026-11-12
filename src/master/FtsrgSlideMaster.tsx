@@ -98,6 +98,10 @@ const FtsrgContentMasterBody = styled('div', {
   },
   '& > :not(style):not(:not(style) ~ *)': { marginTop: 0 },
   '& > :last-child': { marginBottom: 0 },
+  // Slanted columns at the top level reach the edges of the slide.
+  '& > .SeminarColumns-root': {
+    '--FtsrgColumns-edge': theme.spacing(8),
+  },
   '& li li': {
     fontSize: 24,
     listStyleType: 'none',

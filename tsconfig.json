@@ -10,7 +10,7 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": ["node", "vite/client", "@seminar/mdx/client"],
+    "types": ["node", "vite/client", "@mui/material/styles", "@seminar/mdx/client", "@seminar/elements"],
     "paths": {
       "@/*": ["./src/*"]
     }
