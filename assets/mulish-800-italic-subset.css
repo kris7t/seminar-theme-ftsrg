@@ -1,6 +1,6 @@
 /*
  * Subset of Mulish ExtraBold Italic with only the characters of the name of the
- * group (see scripts/subset-mulish.py). It has its own family name so that it
+ * group (see scripts/subset-fonts.py). It has its own family name so that it
  * does not shadow the full Mulish font if a deck loads it.
  */
 @font-face {

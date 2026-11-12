@@ -1,14 +1,22 @@
 import { generateUtilityClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+import { BME_LOGO_COLOR, BME_LOGO_VIEW_BOX_HEIGHT, BmeLogo } from './BmeLogo';
 import { FtsrgColorLogo, LOGO_COLOR } from './FtsrgLogo';
 import { FtsrgName } from './FtsrgName';
 import { MIT_LOGO_COLOR, MitLabelEn, MitLabelHu, MitLogo } from './MitLogo';
-
-import bmeLogo from '../../assets/bme-logo.avif';
-import vikLogo from '../../assets/vik-logo.avif';
-import vikLabelEn from '../../assets/vik-label-en.avif';
-import vikLabelHu from '../../assets/vik-label-hu.avif';
+import {
+  VIK_LOGO_COLOR,
+  VIK_LOGO_VIEW_BOX_HEIGHT,
+  VIK_LOGO_VIEW_BOX_WIDTH,
+  VikLogo,
+} from './VikLogo';
+import {
+  VIK_NAME_FONT_SIZE,
+  VIK_NAME_LINE_HEIGHT,
+  VIK_NAME_OFFSET,
+  VikName,
+} from './VikName';
 
 const logosClasses = generateUtilityClasses('FtsrgLogos', [
   'root',
@@ -79,6 +87,21 @@ const LOGO_HEIGHT = 64;
 // padding as in the raster logos (2.5px for a 170px tall image).
 const LOGO_INSET = LOGO_HEIGHT * (2.5 / 170);
 const VECTOR_LOGO_HEIGHT = LOGO_HEIGHT - 2 * LOGO_INSET;
+// The logotype of the university and the name of the faculty are set at the
+// same scale (px per pt) as the roundel of the faculty, as in its logos.
+const VIK_SCALE = VECTOR_LOGO_HEIGHT / VIK_LOGO_VIEW_BOX_HEIGHT;
+
+// Text label next to the roundel of the faculty.
+const VikLabel = styled(VikName, {
+  name: 'FtsrgLogos',
+  slot: 'Label',
+})({
+  marginInlineStart: (VIK_NAME_OFFSET - VIK_LOGO_VIEW_BOX_WIDTH) * VIK_SCALE,
+  marginInlineEnd: LOGO_INSET,
+  fontSize: VIK_NAME_FONT_SIZE * VIK_SCALE,
+  lineHeight: `${String(VIK_NAME_LINE_HEIGHT * VIK_SCALE)}px`,
+  color: VIK_LOGO_COLOR,
+});
 
 export function Logos({
   lang = 'en',
@@ -103,7 +126,6 @@ export function Logos({
           mit: 'Department of Artificial Intelligence and Systems Engineering',
           ftsrg: 'Critical Systems Research Group',
         };
-  const vikLabel = lang === 'hu' ? vikLabelHu : vikLabelEn;
   const MitLabel = lang === 'hu' ? MitLabelHu : MitLabelEn;
 
   return (
@@ -118,14 +140,18 @@ export function Logos({
         aria-label={labels.bme}
         className={logosClasses.link}
       >
-        <img
-          src={bmeLogo}
-          height={LOGO_HEIGHT}
-          alt=""
+        <BmeLogo
+          height={BME_LOGO_VIEW_BOX_HEIGHT * VIK_SCALE}
+          role="presentation"
+          aria-label={undefined}
+          style={{ margin: LOGO_INSET }}
           className={logosClasses.image}
         />
       </LogosLink>
-      <LogosSeparator color="#000" className={logosClasses.separator} />
+      <LogosSeparator
+        color={BME_LOGO_COLOR}
+        className={logosClasses.separator}
+      />
       <LogosLink
         href="https://vik.bme.hu"
         target="_blank"
@@ -133,22 +159,29 @@ export function Logos({
         aria-label={labels.vik}
         className={logosClasses.link}
       >
-        <img
-          src={vikLogo}
-          height={LOGO_HEIGHT}
-          alt=""
+        <VikLogo
+          height={VECTOR_LOGO_HEIGHT}
+          role="presentation"
+          aria-label={undefined}
+          // The label has its own spacing after the logo.
+          style={{
+            margin: LOGO_INSET,
+            marginInlineEnd: compact ? LOGO_INSET : 0,
+          }}
           className={logosClasses.image}
         />
         {!compact && (
-          <img
-            src={vikLabel}
-            height={LOGO_HEIGHT}
-            alt=""
-            className={logosClasses.image}
+          <VikLabel
+            lang={labels.lang}
+            aria-hidden="true"
+            className={logosClasses.label}
           />
         )}
       </LogosLink>
-      <LogosSeparator color="#211661" className={logosClasses.separator} />
+      <LogosSeparator
+        color={VIK_LOGO_COLOR}
+        className={logosClasses.separator}
+      />
       <LogosLink
         href="https://mit.bme.hu"
         target="_blank"

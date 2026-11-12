@@ -1,0 +1,12 @@
+/*
+ * Subset of Montserrat Regular with only the characters of the name of the
+ * faculty (see scripts/subset-fonts.py). It has its own family name so that it
+ * does not shadow the full Montserrat font if a deck loads it.
+ */
+@font-face {
+  font-family: 'VIK Name';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./montserrat-400-subset.woff2) format(woff2);
+}
