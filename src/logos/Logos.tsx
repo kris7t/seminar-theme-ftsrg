@@ -39,6 +39,11 @@ const LogosRoot = styled('div', {
       filter: 'brightness(0%) opacity(0.34)',
     },
   '& > *': {
+    // Keeps the logos in their own layers, so that browsers render the text of
+    // the labels with grayscale antialiasing (like the vector logos) even where
+    // the logos aren't composited otherwise, instead of switching from subpixel
+    // antialiasing when the filter is applied.
+    willChange: 'filter',
     '@media (prefers-reduced-motion: no-preference)': {
       transition: theme.transitions.create('filter', {
         duration: theme.transitions.duration.standard,
